@@ -49,7 +49,7 @@ const NavBar = () => {
         <FaGithub size={25} />
         </>
       ),
-      href: "https://www.linkedin.com/in/samuel-fessehaye/",
+      href: "https://github.com/Sam-Wel",
       disc: "GitHub",
     },
     {
@@ -97,7 +97,7 @@ const NavBar = () => {
       disc: "Facebook",
     },
     {
-      id: 6,
+      id: 7,
       child: (
         <>
         <FaTwitter size={25} />
@@ -173,19 +173,21 @@ const NavBar = () => {
               </Link>
             </li>
           ))}
-          {socials.map(({ id, child, disc }) => (
+          {socials.map(({ id, child, disc, href,download }) => (
           <li
             key={id}
             className="px-4 cursor-pointer capitalize py-6 text-4xl"
           >
           
-            <Link 
-            onClick={()=>setNav(!nav)}
-            to={child} 
-            smooth 
-            duration={500} className="inline-block">
-             {disc}
-            </Link>
+          <a
+              href={href}
+              className="flex justify-between items-center w-full text-white"
+              download={download}
+              target="_blank"
+              rel="noreferrer"
+            >
+              {disc}
+            </a>
           </li>
         ))}
         </ul>

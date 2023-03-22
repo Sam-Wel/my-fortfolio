@@ -42,8 +42,6 @@ export default About;
 
 /*
 - Create favitcon
-- update my resume
-- connect facebook, instagram, twitter
 - Make my name route to homepage
 - get rid of side pop up options
 - get ride of portfolio
