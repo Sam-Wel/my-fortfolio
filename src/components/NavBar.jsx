@@ -173,7 +173,7 @@ const NavBar = () => {
               </Link>
             </li>
           ))}
-          {socials.map(({ id, child, disc, href,download }) => (
+          {socials.map(({ id, disc, href,download }) => (
           <li
             key={id}
             className="px-4 cursor-pointer capitalize py-6 text-4xl"
@@ -183,8 +183,6 @@ const NavBar = () => {
               href={href}
               className="flex justify-between items-center w-full text-white"
               download={download}
-              target="_blank"
-              rel="noreferrer"
             >
               {disc}
             </a>
