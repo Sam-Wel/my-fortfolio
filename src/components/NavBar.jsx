@@ -181,8 +181,6 @@ const NavBar = () => {
           
           <a
               href={href}
-              className="flex justify-between items-center w-full text-white"
-              download={download}
             >
               {disc}
             </a>
