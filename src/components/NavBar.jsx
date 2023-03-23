@@ -182,6 +182,7 @@ const NavBar = () => {
           <a
               href={href}
               target="_blank"
+              rel="noreferrer"
             >
               {disc}
             </a>
