@@ -179,11 +179,11 @@ const NavBar = () => {
             className="px-4 cursor-pointer capitalize py-6 text-4xl"
           >
           
-          <a
-              href={href}
+          <Link
+              to={href}
             >
               {disc}
-            </a>
+            </Link>
           </li>
         ))}
         </ul>
