@@ -128,7 +128,7 @@ const NavBar = () => {
       </div>
       <div className="justify-start">
       <Link to="home" smooth duration={500}>
-        <h1 className=" text-white text-3xl ml-5 font-extrabold font-signature">SAMUEL FESSEHAYE</h1>
+        <h1 className=" text-white text-3xl font-extrabold font-signature md:ml-5">SAMUEL FESSEHAYE</h1>
       </Link>
       </div>
       <div className="justify-center">
