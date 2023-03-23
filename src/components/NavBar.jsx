@@ -181,7 +181,7 @@ const NavBar = () => {
           
           <a
               href={href}
-              target="_blank"
+              target='_blank'
               rel="noreferrer"
             >
               {disc}
