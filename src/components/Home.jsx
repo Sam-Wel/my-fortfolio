@@ -1,6 +1,5 @@
 import React from "react";
 import HeroImage from "../assets/heroImage.png";
-import { Link } from "react-scroll";
 
 const Home = () => {
   return (
@@ -18,14 +17,14 @@ const Home = () => {
           </p>
 
           <div>
-            <Link
-              to="portfolio"
+            <a
+              href="/FESSEHAYE, SAMUEL_RESUME_Updated.pdf"
               smooth
               duration={500}
               className="group text-white w-fit px-6 py-3 my-2 flex items-center rounded-md bg-gradient-to-r from-cyan-500 to-cyan-700 cursor-pointer"
             >
-              Portfolio
-            </Link>
+              Resume
+            </a>
           </div>
         </div>
 
