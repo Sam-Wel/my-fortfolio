@@ -21,9 +21,9 @@ const Home = () => {
               href="/FESSEHAYE, SAMUEL_RESUME_Updated.pdf"
               smooth
               duration={500}
-              className="group text-white w-fit px-6 py-3 my-2 flex items-center rounded-md bg-gradient-to-r from-cyan-500 to-cyan-700 cursor-pointer"
+              className="group text-white w-fit px-6 py-3 my-2 flex items-center rounded-md bg-gradient-to-r bg-cyan-600 cursor-pointer hover:bg-cyan-700"
             >
-              Resume
+              RESUME
             </a>
           </div>
         </div>

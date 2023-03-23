@@ -18,7 +18,7 @@ const NavBar = () => {
     },
     {
       id: 3,
-      link: "portfolio",
+      link: "blog",
     },
     {
       id: 4,
@@ -127,7 +127,9 @@ const NavBar = () => {
         </ul>
       </div>
       <div className="justify-start">
+      <Link to="home">
         <h1 className=" text-white text-3xl ml-5 font-extrabold font-signature">SAMUEL FESSEHAYE</h1>
+      </Link>
       </div>
       <div className="justify-center">
         <ul className="hidden md:flex">
@@ -183,6 +185,7 @@ const NavBar = () => {
               href={href}
               target='_blank'
               rel="noreferrer"
+              download={download}
             >
               {disc}
             </a>
