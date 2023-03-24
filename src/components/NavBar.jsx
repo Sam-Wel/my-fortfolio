@@ -3,30 +3,44 @@ import { FaBars, FaTimes, FaLinkedin, FaGithub, FaFacebook, FaTwitter, FaInstagr
 import { Link } from "react-scroll";
 import { HiOutlineMail } from "react-icons/hi";
 import { BsFillPersonLinesFill } from "react-icons/bs";
+import { useNavigate } from 'react-router-dom';
+
+
+
 
 const NavBar = () => {
+  const navigate = useNavigate();
+  const [currentRoute, setRoute] = useState("");
+
+  const handleClick = (event) => {
+    setRoute(event.target.dataset.value);
+    navigate(currentRoute);
+    console.log(event.target.dataset.value)
+  };
+
+
   const [nav, setNav] = useState(false);
 
   const links = [
     {
       id: 1,
       link: "home",
+      path:"",
     },
     {
       id: 2,
       link: "about",
+      path:"",
     },
     {
       id: 3,
-      link: "blog",
+      link: "experience",
+      path:"",
     },
     {
       id: 4,
-      link: "experience",
-    },
-    {
-      id: 5,
       link: "contact",
+      path:"",
     },
   ];
 
@@ -111,24 +125,31 @@ const NavBar = () => {
 
 
   return (
+    <div>
     <div className="flex justify-between uppercase items-center w-full h-20 px-4 text-white bg-black fixed">
       <div className="">
         <ul className="hidden md:flex">
+        
           {links.map(({ id,link }) => (
             <li
+            data-value="" onClick={handleClick}
               key={id}
               className="px-4 cursor-pointer font-signature text-gray-500 hover:scale-110 duration-200 hover:text-white"
             >
-              <Link to={link} smooth duration={500}>
+              <Link to={link} data-value="" onClick={handleClick} smooth duration={500}>
                 {link}
               </Link>
             </li>
           ))}
+          
+          <li data-value="blog" onClick={handleClick} className="px-4 cursor-pointer font-signature text-gray-500 hover:scale-110 duration-200 hover:text-white">
+              blog
+          </li>
         </ul>
       </div>
       <div className="justify-start">
       <Link to="home" smooth duration={500}>
-        <h1 className=" text-white text-3xl font-extrabold font-signature md:ml-5">SAMUEL FESSEHAYE</h1>
+        <h1 className=" text-white text-3xl font-bold font-signature md:ml-5">SAMUEL FESSEHAYE</h1>
       </Link>
       </div>
       <div className="justify-center">
@@ -193,6 +214,7 @@ const NavBar = () => {
         ))}
         </ul>
       )}
+    </div>
     </div>
   );
 };

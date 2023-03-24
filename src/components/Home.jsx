@@ -1,8 +1,14 @@
 import React from "react";
 import HeroImage from "../assets/heroImage.png";
+import Contact from "./Contact";
+import Experience from "./Experience";
+import About from "./About";
+import SocialLinks from "./SocialLinks";
+
 
 const Home = () => {
   return (
+    <div>
     <div
       name="home"
       className="flex items-end h-screen w-full bg-black justify-center md:items-center"
@@ -36,6 +42,11 @@ const Home = () => {
           />
         </div>
       </div>
+    </div>
+    <About/>
+    <Experience/>
+    <Contact/>
+    <SocialLinks/>
     </div>
   );
 };
