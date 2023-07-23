@@ -95,7 +95,7 @@ const NavBar = () => {
         <FaInstagram size={25} />
         </>
       ),
-      href: "https://www.instagram.com/sam_wel__/",
+      href: "https://www.instagram.com/samuel_weldemichael/",
       style: "rounded-br-md",
       disc: "Instagram",
     },
