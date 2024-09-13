@@ -60,35 +60,35 @@ const Experience = () => {
       id: 7,
       src: cpp,
       title: "C++",
-      style: "shadow-blue-400",
+      style: "shadow-black",
       size:"w-20 mx-auto",
     },
     {
       id: 9,
       src: python,
       title: "Python",
-      style: "shadow-yellow-400",
+      style: "shadow-black",
       size:"w-20 mx-auto",
     },
     {
       id: 10,
       src: oracle,
       title: "Oracle",
-      style: "shadow-red-400",
+      style: "shadow-black",
       size:"w-20 mx-auto",
     },
     {
       id: 11,
       src: cassandra,
       title: "Cassandra",
-      style: "shadow-sky-200",
+      style: "shadow-black",
       size:"w-20 mx-auto",
     },
     {
       id: 12,
       src: kafka,
       title: "Kafka",
-      style: "shadow-white",
+      style: "shadow-black",
       size:"w-20 mx-auto",
     },
   ];
@@ -96,14 +96,13 @@ const Experience = () => {
   return (
     <div
       name="experience"
-      className="bg-gradient-to-b bg-black w-full md:h-screen"
+      className="bg-gradient-to-b text-center bg-dark-blue w-full md:h-screen"
     >
       <div className="max-w-screen-lg mx-auto p-4 flex flex-col justify-center w-full h-full text-white">
         <div>
-          <p className="text-cyan-500 text-4xl font-bold border-b-4 border-gray-500 p-2 inline">
+          <p className="text-blue-500 text-4xl font-bold border-b-4 border-blue-900 p-2 inline">
             Experience
           </p>
-          <p className="py-6 text-gray-300">These are the technologies I've worked with</p>
         </div>
 
         <div className="w-full grid grid-cols-2 sm:grid-cols-4 gap-8 text-center py-8 px-12 sm:px-0">

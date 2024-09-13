@@ -1,21 +1,19 @@
 import React from "react";
-import HeroImage from "../assets/heroImage.png";
+import profile from "../assets/profile1.png";
 import Contact from "./Contact";
 import Experience from "./Experience";
 import About from "./About";
-import SocialLinks from "./SocialLinks";
-
 
 const Home = () => {
   return (
     <div>
     <div
       name="home"
-      className="flex items-end h-screen w-full bg-black justify-center md:items-center"
+      className="flex items-end h-screen w-full     bg-dark-blue text-blue-500  justify-center md:items-center"
     >
       <div className="flex flex-col items-center px-4 m-6 md:flex-row justify-center w-full md:w-1/2">
         <div className="flex-col justify-center w-1/2">
-          <h2 className="text-4xl font-bold text-cyan-500 text-#8DD9BF">
+          <h2 className="text-4xl font-bold text-white ">
             I'm a Full Stack Developer
           </h2>
           <p className="text-gray-300 py-4 max-w-md">
@@ -27,7 +25,7 @@ const Home = () => {
               href="/FESSEHAYE, SAMUEL_RESUME_Updated.pdf"
               smooth
               duration={500}
-              className="group text-white w-fit px-6 py-3 my-2 flex items-center rounded-md bg-gradient-to-r bg-cyan-600 cursor-pointer hover:bg-cyan-700"
+              className="group text-white w-fit px-6 py-3 my-2 flex items-center rounded-md bg-gradient-to-r bg-blue-500 cursor-pointer hover:bg-blue-800"
             >
               RESUME
             </a>
@@ -36,7 +34,7 @@ const Home = () => {
 
         <div className=" w-full md:w-1/2">
           <img
-            src={HeroImage}
+            src={profile}
             alt="my profile"
             className="rounded-2xl mx-auto w-2/4 md:w-full"
           />
@@ -46,7 +44,6 @@ const Home = () => {
     <About/>
     <Experience/>
     <Contact/>
-    <SocialLinks/>
     </div>
   );
 };

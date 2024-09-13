@@ -126,15 +126,15 @@ const NavBar = () => {
 
   return (
     <div>
-    <div className="flex justify-between uppercase items-center w-full h-20 px-4 text-white bg-black fixed">
-      <div className="">
+    <div className="flex justify-between uppercase bg-dark-blue text-blue-500 items-center w-full h-20 px-4  fixed">
+      <div className="  text-blue-500">
         <ul className="hidden md:flex">
         
           {links.map(({ id,link }) => (
             <li
             data-value="" onClick={handleClick}
               key={id}
-              className="px-4 cursor-pointer font-signature text-gray-500 hover:scale-110 duration-200 hover:text-white"
+              className="px-4 cursor-pointer font-signature text-white hover:scale-110 duration-200 hover:text-blue-400"
             >
               <Link to={link} data-value="" onClick={handleClick} smooth duration={500}>
                 {link}
@@ -142,14 +142,14 @@ const NavBar = () => {
             </li>
           ))}
           
-          <li data-value="blog" onClick={handleClick} className="px-4 cursor-pointer font-signature text-gray-500 hover:scale-110 duration-200 hover:text-white">
-              blog
+          <li data-value="hobby" onClick={handleClick} className="px-4 cursor-pointer font-signature text-white hover:scale-110 duration-200 hover:text-blue-400">
+              hobby
           </li>
         </ul>
       </div>
       <div className="justify-start">
       <Link to="home" smooth duration={500}>
-        <h1 className=" text-white text-3xl font-bold font-signature md:ml-5">SAMUEL FESSEHAYE</h1>
+        <h1 className=" text-blue-500 text-3xl font-bold font-signature md:ml-5">SAMUEL FESSEHAYE</h1>
       </Link>
       </div>
       <div className="justify-center">
@@ -157,7 +157,7 @@ const NavBar = () => {
           {socials.map(({ id, href, child, download }) => (
             <li
               key={id}
-              className="px-4 cursor-pointer capitalize font-medium text-gray-500 hover:scale-110 duration-200 hover:text-white"
+              className="px-4 cursor-pointer capitalize font-medium text-white hover:scale-110 duration-200 hover:text-blue-400"
             >
             <a
               href={href}
@@ -180,7 +180,7 @@ const NavBar = () => {
       </div>
 
       {nav && (
-        <ul className="overflow-y-scroll flex flex-col items-center lowercase absolute top-0 left-0 w-full h-screen bg-gradient-to-b from-black to-gray-800 text-white">
+        <ul className="overflow-y-scroll flex flex-col items-center lowercase absolute top-0 left-0 w-full h-screen bg-gradient-to-b from-blue-600 to-blue-900 text-white">
           {links.map(({ id, link }) => (
             <li
               key={id}
