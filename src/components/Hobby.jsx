@@ -55,7 +55,7 @@ const Hobby = () => {
                 <h1 className="inline font-bold">{title}</h1>
                 <p className="inline float-right px-4 mb-3 text-gray-400">{ "updated since " + date}</p>
                 <p className="mt-4  mx-4">{content}</p>
-                <a className="bg-blue-500 hover:bg-blue-700" href="#" style={{
+                <a className="bg-blue-500 hover:bg-blue-700" href="https://www.youtube.com/@samuelfessehaye" style={{
             padding: '10px 20px',
             margin:'10px',
             textDecoration: 'none',
