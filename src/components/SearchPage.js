@@ -7,6 +7,7 @@ function SearchPage() {
   const [selectedLanguage, setSelectedLanguage] = useState('');
   const [languages, setLanguages] = useState([]);
   const [results, setResults] = useState([]);
+  const [suggestions, setSuggestions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -33,6 +34,31 @@ function SearchPage() {
     map[lang.language_code] = lang.language_name;
     return map;
   }, {});
+
+  // Fetch suggestions as the user types
+  const fetchSuggestions = async (value) => {
+    if (!value.trim() || !selectedLanguage) {
+      setSuggestions([]);
+      return;
+    }
+
+    try {
+      const { data, error } = await supabase
+        .from('words')
+        .select('word')
+        .eq('language_code', selectedLanguage)
+        .ilike('word', `${value}%`) // Match words starting with the input
+        .limit(5); // Limit suggestions to 5
+
+      if (error) {
+        console.error('Error fetching suggestions:', error);
+      } else {
+        setSuggestions(data.map((item) => item.word));
+      }
+    } catch (err) {
+      console.error('Unexpected error fetching suggestions:', err);
+    }
+  };
 
   // Handle search functionality
   const handleSearch = async () => {
@@ -91,11 +117,30 @@ function SearchPage() {
         <input
           type="text"
           value={query}
-          onChange={(e) => setQuery(e.target.value)}
+          onChange={(e) => {
+            setQuery(e.target.value);
+            fetchSuggestions(e.target.value);
+          }}
           placeholder="Enter a word to search..."
           className="w-full p-4 pl-10 text-lg border rounded shadow focus:outline-none focus:ring focus:border-blue-300"
         />
         <FaSearch className="absolute left-3 top-4 text-gray-400" />
+        {suggestions.length > 0 && (
+          <ul className="absolute left-0 right-0 mt-2 bg-white border rounded shadow z-10">
+            {suggestions.map((suggestion, index) => (
+              <li
+                key={index}
+                className="p-2 hover:bg-gray-100 cursor-pointer"
+                onClick={() => {
+                  setQuery(suggestion);
+                  setSuggestions([]);
+                }}
+              >
+                {suggestion}
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
 
       {/* Search Button */}
@@ -113,13 +158,20 @@ function SearchPage() {
       {/* Results Display */}
       <div className="mt-8 w-full max-w-md">
         {results.length > 0 ? (
-          <div className="p-4 border rounded mb-4">
-            <strong>Word:</strong> {results[0].word}
-            <ul className="mt-2">
+          <div className="p-6 border rounded shadow-lg bg-white">
+            <h2 className="text-xl font-bold text-gray-800 mb-4">
+              Word: <span className="text-blue-600">{results[0].word}</span>
+            </h2>
+            <ul className="space-y-2">
               {results.map((result, index) => (
-                <li key={index}>
-                  <strong>{languageMap[result.target_language] || result.target_language}:</strong>{' '}
-                  {result.translated_word}
+                <li
+                  key={index}
+                  className="p-3 border rounded bg-gray-50 hover:bg-gray-100 transition"
+                >
+                  <span className="block font-medium text-gray-700">
+                    {languageMap[result.target_language] || result.target_language}:
+                  </span>
+                  <span className="text-gray-900">{result.translated_word}</span>
                 </li>
               ))}
             </ul>
