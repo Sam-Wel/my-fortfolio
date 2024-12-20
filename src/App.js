@@ -4,6 +4,7 @@ import Hobby from "./components/Hobby";
 
 
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import SearchPage from "./components/SearchPage";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />}/>
             <Route path="/hobby" element={<Hobby/>}/>
+            <Route path="/searchbar" element={<SearchPage/>}/>
           </Routes>
         </div>
       </div>
