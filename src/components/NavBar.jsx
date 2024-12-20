@@ -15,6 +15,7 @@ const NavBar = () => {
   const handleClick = (event) => {
     setRoute(event.target.dataset.value);
     navigate(currentRoute);
+    setNav(false); // Collapse the menu
     console.log(event.target.dataset.value)
   };
 
@@ -207,7 +208,12 @@ const NavBar = () => {
                 {link}
               </li>
             ))}
-
+            <li data-value="hobby" onClick={handleClick} className="px-4 cursor-pointer capitalize py-6 text-4xl">
+              hobby
+          </li>
+          <li data-value="searchBar" onClick={handleClick} className="px-4 cursor-pointer capitalize py-6 text-4xl">
+              dictionary
+          </li>
           {socials.map(({ id, disc, href,download }) => (
           <li
             key={id}
