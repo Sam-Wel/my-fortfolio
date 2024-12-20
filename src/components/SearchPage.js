@@ -93,7 +93,7 @@ function SearchPage() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-4">
-      <h1 className="text-3xl font-bold mb-6">Search Word Translations</h1>
+      <h1 className="text-3xl font-bold mb-6">ምዕላደ ቃላት - dictionary</h1>
 
       {/* Language Selection Dropdown */}
       <div className="mb-4 w-full max-w-md">
@@ -113,7 +113,8 @@ function SearchPage() {
       </div>
 
       {/* Search Bar */}
-      <div className="relative w-full max-w-md">
+      <div className=" w-full max-w-md ">
+      <div className= "flex items-center border rounded shadow w-full">
         <input
           type="text"
           value={query}
@@ -124,9 +125,10 @@ function SearchPage() {
           placeholder="Enter a word to search..."
           className="w-full p-4 pl-10 text-lg border rounded shadow focus:outline-none focus:ring focus:border-blue-300"
         />
-        <FaSearch className="absolute left-3 top-4 text-gray-400" />
+        <FaSearch className="h-full m-4 text-blue-400" />
+        </div>
         {suggestions.length > 0 && (
-          <ul className="absolute left-0 right-0 mt-2 bg-white border rounded shadow z-10">
+          <ul className="relative left-0 right-0 mt-2 bg-white border rounded shadow z-10">
             {suggestions.map((suggestion, index) => (
               <li
                 key={index}

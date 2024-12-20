@@ -8,7 +8,7 @@ const Home = () => {
   return (
     <div>
     <div
-      name="home"
+      id="home"
       className="flex items-end h-screen w-full     bg-dark-blue text-blue-500  justify-center md:items-center"
     >
       <div className="flex flex-col items-center px-4 m-6 md:flex-row justify-center w-full md:w-1/2">

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FaBars, FaTimes, FaLinkedin, FaGithub, FaFacebook, FaTwitter, FaInstagram} from "react-icons/fa";
-import { Link } from "react-scroll";
+import { Link, scroller } from "react-scroll";
 import { HiOutlineMail } from "react-icons/hi";
 import { BsFillPersonLinesFill } from "react-icons/bs";
 import { useNavigate } from 'react-router-dom';
@@ -21,6 +21,25 @@ const NavBar = () => {
 
   const [nav, setNav] = useState(false);
 
+  const handleNavigation = (link) => {
+    if (window.location.pathname !== "/") {
+      navigate("/"); // Navigate to Home
+      setTimeout(() => {
+        scrollToSection(link); // Scroll to the section after navigating
+      }, 100); // Add a small delay to ensure the DOM is ready
+    } else {
+      scrollToSection(link); // Scroll to the section if already on Home
+    }
+    setNav(false); // Close the menu on mobile
+  };
+
+  const scrollToSection = (link) => {
+    scroller.scrollTo(link, {
+      smooth: true,
+      duration: 500,
+      offset: -80, // Adjust offset for navbar height
+    });
+  };
   const links = [
     {
       id: 1,
@@ -136,7 +155,8 @@ const NavBar = () => {
               key={id}
               className="px-4 cursor-pointer font-signature text-white hover:scale-110 duration-200 hover:text-blue-400"
             >
-              <Link to={link} data-value="" onClick={handleClick} smooth duration={500}>
+              <Link to={link} data-value="" onClick={handleClick}   spy={true}
+  smooth="true"  duration={500}>
                 {link}
               </Link>
             </li>
@@ -148,7 +168,8 @@ const NavBar = () => {
         </ul>
       </div>
       <div className="justify-start">
-      <Link to="home" smooth duration={500}>
+      <Link to="home" spy={true}
+  smooth="true"  duration={500}>
         <h1 className=" text-blue-500 text-3xl font-bold font-signature md:ml-5">SAMUEL FESSEHAYE</h1>
       </Link>
       </div>
@@ -181,21 +202,12 @@ const NavBar = () => {
 
       {nav && (
         <ul className="overflow-y-scroll flex flex-col items-center lowercase absolute top-0 left-0 w-full h-screen bg-gradient-to-b from-blue-600 to-blue-900 text-white">
-          {links.map(({ id, link }) => (
-            <li
-              key={id}
-              className="px-4 cursor-pointer capitalize py-6 text-4xl"
-            >
-              <Link
-                onClick={() => setNav(!nav)}
-                to={link}
-                smooth
-                duration={500}
-              >
+        {links.map(({ id, link }) => (
+              <li key={id} className="px-4 cursor-pointer capitalize py-6 text-4xl" onClick={() => handleNavigation(link)}>
                 {link}
-              </Link>
-            </li>
-          ))}
+              </li>
+            ))}
+
           {socials.map(({ id, disc, href,download }) => (
           <li
             key={id}
