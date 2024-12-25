@@ -93,16 +93,16 @@ function SearchPage() {
   };
 
   return (
-    <div className="flex h-screen w-full min-h-screen flex-col items-center justify-center bg-gray-100 p-4">
-      <h1 className="text-3xl font-bold mb-6">ምዕላደ ቃላት - dictionary</h1>
+    <div className="flex h-screen w-full min-h-screen flex-col items-center justify-center bg-gradient-to-b from-gray-100 to-gray-200 p-4 pt-24">
+      <h1 className="text-4xl font-bold text-blue-700 mb-6">Dictionary</h1>
 
       {/* Language Selection Dropdown */}
-      <div className="mb-4 w-full max-w-md">
-        <label className="block text-gray-700 mb-2">Select Language:</label>
+      <div className="mb-4 w-full max-w-lg">
+        <label className="block text-gray-600 mb-2 text-lg">Select Language:</label>
         <select
           value={selectedLanguage}
           onChange={(e) => setSelectedLanguage(e.target.value)}
-          className="w-full p-3 border rounded shadow focus:outline-none focus:ring focus:border-blue-300"
+          className="w-full p-3 border rounded-lg shadow-sm focus:outline-none focus:ring focus:border-blue-400"
         >
           {languages.map((language) => (
             <option key={language.language_code} value={language.language_code}>
@@ -113,8 +113,8 @@ function SearchPage() {
       </div>
 
       {/* Search Bar */}
-      <div className="w-full max-w-md">
-        <div className="flex items-center border rounded shadow w-full">
+      <div className="w-full max-w-lg">
+        <div className="flex items-center border rounded-lg shadow-sm w-full relative">
           <input
             type="text"
             value={query}
@@ -123,12 +123,12 @@ function SearchPage() {
               fetchSuggestions(e.target.value);
             }}
             placeholder="Enter a word to search..."
-            className="w-full p-4 pl-10 text-lg border rounded shadow focus:outline-none focus:ring focus:border-blue-300"
+            className="w-full p-4 pl-12 text-lg rounded-lg focus:outline-none focus:ring focus:border-blue-400"
           />
-          <FaSearch className="h-full m-4 text-blue-400" />
+          <FaSearch className="absolute left-4 text-blue-500 text-xl" />
         </div>
         {suggestions.length > 0 && (
-          <ul className="relative left-0 right-0 mt-2 bg-white border rounded shadow z-10">
+          <ul className="block left-0 right-0 mt-2 bg-white border rounded-lg shadow-lg z-10">
             {suggestions.map((suggestion, index) => (
               <li
                 key={index}
@@ -148,7 +148,7 @@ function SearchPage() {
       {/* Search Button */}
       <button
         onClick={handleSearch}
-        className="mt-4 w-full max-w-md bg-blue-500 text-white p-3 rounded shadow hover:bg-blue-600"
+        className="mt-4 w-full max-w-lg bg-blue-600 text-white py-3 rounded-lg shadow-lg hover:bg-blue-700"
       >
         Search
       </button>
@@ -158,32 +158,32 @@ function SearchPage() {
       {error && <p className="text-red-500 mt-4">{error}</p>}
 
       {/* Results Display */}
-      <div className="mt-8 w-full max-w-md">
+      <div className="mt-8 w-full max-w-lg">
         {results.length > 0 ? (
-          <div className="p-6 border rounded shadow-lg bg-white">
-            <h2 className="text-xl font-bold text-gray-800 mb-4">
+          <div className="p-6 border rounded-lg shadow-xl bg-white">
+            <h2 className="text-2xl font-semibold text-gray-800 mb-4">
               Word: <span className="text-blue-600">{results[0].word}</span>
             </h2>
             <ul className="space-y-4">
               {results.map((result, index) => (
                 <li
                   key={index}
-                  className="flex items-center justify-between p-3 border rounded bg-gray-50 hover:bg-gray-100 transition"
+                  className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 border rounded-lg bg-blue-50 hover:bg-blue-100 transition shadow-sm"
                 >
                   <div>
-                    <span className="block font-medium text-gray-700">
-                      {languageMap[result.target_language] || result.target_language}:
-                    </span>
-                    <span className="text-gray-900">{result.translated_word}</span>
+                    <p className="text-sm font-semibold text-blue-700">
+                      {languageMap[result.target_language] || result.target_language}
+                    </p>
+                    <p className="text-lg text-gray-900">{result.translated_word}</p>
                   </div>
-                  <button
+                  {/* <button
                     onClick={() =>
                       navigate(`/update-word/${result.word_id}`, { state: result })
                     }
-                    className="bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600"
+                    className="bg-blue-600 text-white px-5 py-2 mt-2 sm:mt-0 rounded-lg shadow hover:bg-blue-700"
                   >
                     Edit
-                  </button>
+                  </button> */}
                 </li>
               ))}
             </ul>
