@@ -10,7 +10,7 @@ const Home = () => {
       {/* Hero Section */}
       <div
         id="home"
-        className="flex items-center h-screen w-full bg-dark-blue text-white justify-center"
+        className="flex items-center h-screen w-full bg-dark-blue text-white justify-center pt-20 md:pt-0"
       >
         <div className="flex flex-col md:flex-row items-center px-6 max-w-screen-lg space-y-8 md:space-y-0">
           {/* Text Content */}
