@@ -214,6 +214,13 @@ const NavBar = () => {
           <li data-value="searchBar" onClick={handleClick} className="px-4 cursor-pointer capitalize py-6 text-4xl">
               dictionary
           </li>
+          <li
+            data-value="add-word"
+            onClick={handleClick}
+            className="px-4 cursor-pointer capitalize py-6 text-4xl"
+          >
+            Add Word
+          </li>
           {socials.map(({ id, disc, href,download }) => (
           <li
             key={id}
