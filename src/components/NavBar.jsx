@@ -211,7 +211,7 @@ const NavBar = () => {
             <li data-value="hobby" onClick={handleClick} className="px-4 cursor-pointer capitalize py-6 text-4xl">
               hobby
           </li>
-          <li data-value="searchBar" onClick={handleClick} className="px-4 cursor-pointer capitalize py-6 text-4xl">
+          <li data-value="dictionary" onClick={handleClick} className="px-4 cursor-pointer capitalize py-6 text-4xl">
               dictionary
           </li>
           <li

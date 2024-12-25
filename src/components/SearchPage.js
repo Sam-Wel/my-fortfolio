@@ -1,25 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { FaSearch } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 
 function SearchPage() {
   const [query, setQuery] = useState('');
-  const [selectedLanguage, setSelectedLanguage] = useState('');
-  const [languages, setLanguages] = useState([]); // Initialize as an empty array
+  const [selectedLanguage, setSelectedLanguage] = useState('gz'); // Default to Ge'ez
+  const [languages, setLanguages] = useState([]);
   const [results, setResults] = useState([]);
   const [suggestions, setSuggestions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const navigate = useNavigate();
-
-  // Safely handle language mapping
-  const languageMap = Array.isArray(languages)
-    ? languages.reduce((map, lang) => {
-        map[lang.language_code] = lang.language_name;
-        return map;
-      }, {})
-    : {};
 
   // Fetch available languages
   useEffect(() => {
@@ -29,7 +19,7 @@ function SearchPage() {
         if (error) {
           console.error('Error fetching languages:', error);
         } else {
-          setLanguages(data || []); // Set an empty array if no data
+          setLanguages(data);
         }
       } catch (err) {
         console.error('Unexpected error:', err);
@@ -38,6 +28,12 @@ function SearchPage() {
 
     fetchLanguages();
   }, []);
+
+  // Map language codes to language names
+  const languageMap = languages.reduce((map, lang) => {
+    map[lang.language_code] = lang.language_name;
+    return map;
+  }, {});
 
   // Fetch suggestions as the user types
   const fetchSuggestions = async (value) => {
@@ -84,7 +80,6 @@ function SearchPage() {
         setError('Failed to fetch data. Please try again.');
         console.error(error);
       } else {
-        console.log('Query result:', data); // Debug the structure
         setResults(data);
       }
     } catch (err) {
@@ -97,7 +92,7 @@ function SearchPage() {
 
   return (
     <div className="flex h-screen w-full min-h-screen flex-col items-center justify-center bg-gray-100 p-4">
-      <h1 className="text-3xl font-bold mb-6">ምዕላደ ቃላት - Dictionary</h1>
+      <h1 className="text-3xl font-bold mb-6">ምዕላደ ቃላት - dictionary</h1>
 
       {/* Language Selection Dropdown */}
       <div className="mb-4 w-full max-w-md">
@@ -107,7 +102,6 @@ function SearchPage() {
           onChange={(e) => setSelectedLanguage(e.target.value)}
           className="w-full p-3 border rounded shadow focus:outline-none focus:ring focus:border-blue-300"
         >
-          <option value="">-- Select a Language --</option>
           {languages.map((language) => (
             <option key={language.language_code} value={language.language_code}>
               {language.language_name}
@@ -172,29 +166,20 @@ function SearchPage() {
               {results.map((result, index) => (
                 <li
                   key={index}
-                  className="p-3 border rounded bg-gray-50 hover:bg-gray-100 transition flex justify-between items-center"
+                  className="p-3 border rounded bg-gray-50 hover:bg-gray-100 transition"
                 >
-                  <div>
-                    <span className="block font-medium text-gray-700">
-                      {languageMap[result.target_language] || result.target_language}:
-                    </span>
-                    <span className="text-gray-900">{result.translated_word}</span>
-                  </div>
-                  <button
-                    className="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600"
-                    onClick={() =>
-                      navigate(`/update-word/${result.word_id}`, { state: result })
-                    }
-                  >
-                    Edit
-                  </button>
+                  <span className="block font-medium text-gray-700">
+                    {languageMap[result.target_language] || result.target_language}:
+                  </span>
+                  <span className="text-gray-900">{result.translated_word}</span>
                 </li>
               ))}
             </ul>
           </div>
         ) : (
-          !loading &&
-          query.trim() && <p className="text-gray-500 mt-4">No results found.</p>
+          !loading && query.trim() && (
+            <p className="text-gray-500 mt-4">No results found.</p>
+          )
         )}
       </div>
     </div>
