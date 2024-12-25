@@ -64,9 +64,9 @@ const NavBar = () => {
   ];
 
   return (
-    <div className="fixed w-full z-50 bg-dark-blue shadow-lg">
+    <div className="fixed w-full z-50 bg-[#0D112B] shadow-lg">
       {/* Desktop Navbar */}
-      <div className="flex justify-between items-center h-20 px-4 text-white">
+      <div className="flex justify-between items-center h-20 px-6 text-white">
         {/* Logo */}
         <Link
           to="home"
@@ -84,7 +84,7 @@ const NavBar = () => {
               <li
                 key={id}
                 onClick={() => navigate(path)}
-                className="cursor-pointer hover:text-blue-400 transition"
+                className="cursor-pointer hover:text-blue-400 transition-all duration-300"
               >
                 {label}
               </li>
@@ -92,7 +92,7 @@ const NavBar = () => {
               <li
                 key={id}
                 onClick={() => handleNavigation(link)}
-                className="cursor-pointer hover:text-blue-400 transition"
+                className="cursor-pointer hover:text-blue-400 transition-all duration-300"
               >
                 {label}
               </li>
@@ -109,7 +109,7 @@ const NavBar = () => {
                 target="_blank"
                 rel="noreferrer"
                 download={download}
-                className="text-xl hover:text-blue-400 transition"
+                className="text-xl hover:text-blue-400 transition-all duration-300"
               >
                 {icon}
               </a>
@@ -129,7 +129,7 @@ const NavBar = () => {
       {/* Mobile Menu */}
       {nav && (
         <div className="fixed inset-0 bg-gradient-to-b from-blue-600 to-blue-900 text-white flex flex-col items-center justify-start z-40 overflow-y-auto">
-          <div className="w-full flex justify-end px-4 pt-4">
+          <div className="w-full flex justify-end px-6 pt-4">
             <FaTimes
               size={30}
               className="cursor-pointer"
@@ -145,7 +145,7 @@ const NavBar = () => {
                     navigate(path);
                     setNav(false);
                   }}
-                  className="cursor-pointer hover:text-blue-400 transition"
+                  className="cursor-pointer hover:text-blue-400 transition-all duration-300"
                 >
                   {label}
                 </li>
@@ -153,7 +153,7 @@ const NavBar = () => {
                 <li
                   key={id}
                   onClick={() => handleNavigation(link)}
-                  className="cursor-pointer hover:text-blue-400 transition"
+                  className="cursor-pointer hover:text-blue-400 transition-all duration-300"
                 >
                   {label}
                 </li>
@@ -168,7 +168,7 @@ const NavBar = () => {
                   target="_blank"
                   rel="noreferrer"
                   download={download}
-                  className="text-2xl hover:text-blue-400 transition"
+                  className="text-2xl hover:text-blue-400 transition-all duration-300"
                 >
                   {icon}
                 </a>

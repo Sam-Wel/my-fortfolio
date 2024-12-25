@@ -1,120 +1,44 @@
 import React from "react";
-
-import html from "../assets/html.png";
-import javascript from "../assets/javascript.png";
-import reactImage from "../assets/react.png";
-import NET from "../assets/NET.png";
-import Spring from "../assets/Spring.png";
-import tailwind from "../assets/tailwind.png";
-import cpp from "../assets/cpp.png";
-import python from "../assets/python.png";
-import oracle from "../assets/oracle.png";
-import cassandra from "../assets/cassandra.png";
-import kafka from "../assets/kafka.png";
+import {
+  SiTailwindcss,
+  SiSpring,
+  SiPython,
+  SiOracle,
+  SiDotnet,
+  SiApachekafka,
+  SiCplusplus,
+} from "react-icons/si";
+import { FaReact, FaAws } from "react-icons/fa";
 
 const Experience = () => {
-  const techs = [
-    {
-      id: 1,
-      src: html,
-      title: "HTML",
-      style: "shadow-orange-500",
-      size:"w-20 mx-auto",
-    },
-    {
-      id: 2,
-      src: tailwind,
-      title: "Tailwind",
-      style: "shadow-cyan-600",
-      size:"w-20 mx-auto",
-    },
-    {
-      id: 3,
-      src: reactImage,
-      title: "React",
-      style: "shadow-cyan-500",
-      size:"w-20 mx-auto",
-    },
-    {
-      id: 4,
-      src: NET,
-      title: ".NET",
-      style: "shadow-purple-400",
-      size:"w-20 mx-auto",
-    },
-    {
-      id: 5,
-      src: Spring,
-      title: "Spring",
-      style: "shadow-green-400",
-      size:"w-20 mx-auto h-20",
-    },
-    {
-      id: 6,
-      src: javascript,
-      title: "JavaScript",
-      style: "shadow-yellow-500",
-      size:"w-20 mx-auto",
-    },
-    {
-      id: 7,
-      src: cpp,
-      title: "C++",
-      style: "shadow-black",
-      size:"w-20 mx-auto",
-    },
-    {
-      id: 9,
-      src: python,
-      title: "Python",
-      style: "shadow-black",
-      size:"w-20 mx-auto",
-    },
-    {
-      id: 10,
-      src: oracle,
-      title: "Oracle",
-      style: "shadow-black",
-      size:"w-20 mx-auto",
-    },
-    {
-      id: 11,
-      src: cassandra,
-      title: "Cassandra",
-      style: "shadow-black",
-      size:"w-20 mx-auto",
-    },
-    {
-      id: 12,
-      src: kafka,
-      title: "Kafka",
-      style: "shadow-black",
-      size:"w-20 mx-auto",
-    },
+  const skills = [
+    { id: 1, icon: <SiTailwindcss className="text-cyan-500" />, name: "Tailwind CSS" },
+    { id: 2, icon: <FaReact className="text-blue-400" />, name: "React.js" },
+    { id: 3, icon: <SiSpring className="text-green-400" />, name: "Spring Boot" },
+    { id: 4, icon: <SiPython className="text-blue-500" />, name: "Python" },
+    { id: 5, icon: <SiOracle className="text-red-500" />, name: "Oracle" },
+    { id: 6, icon: <SiDotnet className="text-purple-500" />, name: ".NET" },
+    { id: 7, icon: <SiApachekafka className="text-orange-400" />, name: "Kafka" },
+    { id: 8, icon: <FaAws className="text-yellow-500" />, name: "AWS" },
+    { id: 9, icon: <SiCplusplus className="text-blue-300" />, name: "C++" },
   ];
 
   return (
-    <div
-      id="experience"
-      className="bg-gradient-to-b text-center bg-dark-blue w-full md:h-screen"
-    >
-      <div className="max-w-screen-lg mx-auto p-4 flex flex-col justify-center w-full h-full text-white">
-        <div>
-          <p className="text-blue-500 text-4xl font-bold border-b-4 border-blue-900 p-2 inline">
-            Experience
-          </p>
-        </div>
-
-        <div className="w-full grid grid-cols-2 sm:grid-cols-4 gap-8 text-center py-8 px-12 sm:px-0">
-          {techs.map(({ id, src, title, style, size }) => (
+    <div id="experience" className="bg-dark-blue text-white min-h-screen flex items-center justify-center px-8">
+      <div className="max-w-6xl w-full text-center">
+        <h2 className="text-5xl font-bold text-blue-500 mb-10">Experience</h2>
+        <p className="text-gray-300 text-lg mb-16">
+          These are some of the technologies I've worked with to build modern, scalable, and efficient solutions.
+        </p>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-10">
+          {skills.map(({ id, icon, name }) => (
             <div
               key={id}
-              className={`shadow-md hover:scale-105 duration-500 py-2 rounded-lg ${style}`}
+              className="flex flex-col items-center bg-gradient-to-b from-blue-700 to-blue-900 p-8 rounded-lg shadow-lg hover:scale-105 transform transition-transform duration-300"
             >
-              <img src={src} alt="" className={`${size}`} />
-              <p className="mt-4">{title}</p>
+              <div className="text-6xl mb-4">{icon}</div>
+              <p className="text-lg font-semibold">{name}</p>
             </div>
-  
           ))}
         </div>
       </div>

@@ -1,49 +1,56 @@
 import React from "react";
 import profile from "../assets/profile1.png";
-import Contact from "./Contact";
-import Experience from "./Experience";
 import About from "./About";
+import Experience from "./Experience";
+import Contact from "./Contact";
 
 const Home = () => {
   return (
     <div>
-    <div
-      id="home"
-      className="flex items-end h-screen w-full     bg-dark-blue text-blue-500  justify-center md:items-center"
-    >
-      <div className="flex flex-col items-center px-4 m-6 md:flex-row justify-center w-full md:w-1/2">
-        <div className="flex-col justify-center w-1/2">
-          <h2 className="text-4xl font-bold text-white ">
-            I'm a Full Stack Developer
-          </h2>
-          <p className="text-gray-300 py-4 max-w-md">
-          I earned my B.S. degree in Computer Science and a Minor in Mathematics from IUPUI. Currently, focused on building a career in SWE and AI/ML. 
-          </p>
-
-          <div>
+      {/* Hero Section */}
+      <div
+        id="home"
+        className="flex items-center h-screen w-full bg-dark-blue text-white justify-center"
+      >
+        <div className="flex flex-col md:flex-row items-center px-6 max-w-screen-lg space-y-8 md:space-y-0">
+          {/* Text Content */}
+          <div className="flex flex-col items-start w-full md:w-1/2 space-y-6">
+            <h1
+              className="text-6xl font-bold text-blue-500"
+              style={{ fontFamily: "Great Vibes, cursive" }}
+            >
+              I'm a Full Stack Developer
+            </h1>
+            <p className="text-gray-300 text-lg leading-relaxed">
+              I earned my B.S. degree in Computer Science and a Minor in
+              Mathematics from IUPUI. Currently, I’m focused on building a
+              career in Software Engineering and AI/ML, leveraging my skills to
+              create impactful solutions.
+            </p>
             <a
               href="/FESSEHAYE, SAMUEL_RESUME_Updated.pdf"
-              smooth
-              duration={500}
-              className="group text-white w-fit px-6 py-3 my-2 flex items-center rounded-md bg-gradient-to-r bg-blue-500 cursor-pointer hover:bg-blue-800"
+              download
+              className="mt-4 bg-blue-500 hover:bg-blue-700 text-white px-8 py-3 rounded-lg shadow-lg font-medium transition-all duration-300 transform hover:scale-105"
             >
-              RESUME
+              Download Resume
             </a>
           </div>
-        </div>
 
-        <div className=" w-full md:w-1/2">
-          <img
-            src={profile}
-            alt="my profile"
-            className="rounded-2xl mx-auto w-2/4 md:w-full"
-          />
+          {/* Profile Image */}
+          <div className="w-full md:w-1/2 flex justify-center">
+            <img
+              src={profile}
+              alt="Profile"
+              className="rounded-full w-2/3 md:w-3/4 shadow-lg"
+            />
+          </div>
         </div>
       </div>
-    </div>
-    <About/>
-    <Experience/>
-    <Contact/>
+
+      {/* Other Sections */}
+      <About />
+      <Experience />
+      <Contact />
     </div>
   );
 };
