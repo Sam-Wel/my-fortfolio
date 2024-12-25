@@ -26,11 +26,14 @@ const Experience = () => {
   return (
     <div id="experience" className="bg-dark-blue text-white min-h-screen flex items-center justify-center px-8">
       <div className="max-w-6xl w-full text-center">
-        <h2 className="text-5xl font-bold text-blue-500 mb-10">Experience</h2>
-        <p className="text-gray-300 text-lg mb-16">
-          These are some of the technologies I've worked with to build modern, scalable, and efficient solutions.
-        </p>
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-10">
+      <h2
+          className="text-5xl font-bold text-blue-500 border-b-4 border-blue-900 pb-4"
+          style={{ fontFamily: "Raleway, sans-serif" }}
+        >
+          Experience
+        </h2>
+
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 mt-8 gap-10">
           {skills.map(({ id, icon, name }) => (
             <div
               key={id}

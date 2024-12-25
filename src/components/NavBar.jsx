@@ -40,8 +40,9 @@ const NavBar = () => {
     { id: 2, label: "About", link: "about" },
     { id: 3, label: "Experience", link: "experience" },
     { id: 4, label: "Contact", link: "contact" },
-    { id: 5, label: "Dictionary", path: "/dictionary" },
-    { id: 6, label: "Add Word", path: "/add-word" },
+    { id: 5, label: "Hobby", path: "/hobby" },
+    { id: 6, label: "Dictionary", path: "/dictionary" },
+    { id: 7, label: "Add Word", path: "/add-word" },
   ];
 
   const socials = [
