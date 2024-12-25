@@ -61,19 +61,29 @@ const AddWordPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-600 to-blue-900 flex items-center justify-center p-4">
-      <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-md">
-        <h2 className="text-2xl font-bold text-center text-blue-600 mb-6">Add New Word</h2>
+    <div className="flex h-screen w-full min-h-screen flex-col items-center justify-center bg-gradient-to-b from-gray-100 to-gray-200 p-4">
+      <div className="bg-white rounded-lg shadow-xl p-8 w-full max-w-lg">
+        <h2 className="text-3xl font-bold text-center text-blue-700 mb-6">
+          Add New Word
+        </h2>
 
-        {error && <p className="text-red-500 text-center mb-4">{error}</p>}
-        {success && <p className="text-green-500 text-center mb-4">{success}</p>}
+        {error && (
+          <div className="text-red-500 bg-red-100 border border-red-300 rounded-lg p-4 mb-4">
+            {error}
+          </div>
+        )}
+        {success && (
+          <div className="text-green-500 bg-green-100 border border-green-300 rounded-lg p-4 mb-4">
+            {success}
+          </div>
+        )}
 
         <form onSubmit={handleSubmit}>
           {["geez", "tigrinya", "amharic", "english"].map((lang, index) => (
-            <div key={index} className="mb-4">
+            <div key={index} className="mb-6">
               <label
                 htmlFor={lang}
-                className="block text-gray-700 text-sm font-bold mb-2"
+                className="block text-gray-700 text-sm font-semibold mb-2"
               >
                 {lang.charAt(0).toUpperCase() + lang.slice(1)} Word:
               </label>
@@ -83,7 +93,7 @@ const AddWordPage = () => {
                 name={lang}
                 value={wordData[lang]}
                 onChange={handleChange}
-                className="w-full px-4 py-2 border rounded-lg shadow focus:outline-none focus:ring focus:border-blue-300"
+                className="w-full px-4 py-3 border rounded-lg shadow-sm focus:outline-none focus:ring focus:border-blue-400 text-gray-700"
                 placeholder={`Enter word in ${lang}`}
               />
             </div>
@@ -91,7 +101,7 @@ const AddWordPage = () => {
 
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg shadow hover:bg-blue-600 focus:outline-none"
+            className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg shadow-lg hover:bg-blue-700 focus:outline-none transition"
           >
             Add Word
           </button>
