@@ -104,7 +104,6 @@ function SearchPage() {
           onChange={(e) => setSelectedLanguage(e.target.value)}
           className="w-full p-3 border rounded shadow focus:outline-none focus:ring focus:border-blue-300"
         >
-          <option value="">-- Select a Language --</option>
           {languages.map((language) => (
             <option key={language.language_code} value={language.language_code}>
               {language.language_name}
