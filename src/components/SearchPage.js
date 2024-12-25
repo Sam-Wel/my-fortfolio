@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FaSearch } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 
 function SearchPage() {
@@ -10,6 +11,7 @@ function SearchPage() {
   const [suggestions, setSuggestions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   // Fetch available languages
   useEffect(() => {
@@ -102,6 +104,7 @@ function SearchPage() {
           onChange={(e) => setSelectedLanguage(e.target.value)}
           className="w-full p-3 border rounded shadow focus:outline-none focus:ring focus:border-blue-300"
         >
+          <option value="">-- Select a Language --</option>
           {languages.map((language) => (
             <option key={language.language_code} value={language.language_code}>
               {language.language_name}
@@ -162,16 +165,26 @@ function SearchPage() {
             <h2 className="text-xl font-bold text-gray-800 mb-4">
               Word: <span className="text-blue-600">{results[0].word}</span>
             </h2>
-            <ul className="space-y-2">
+            <ul className="space-y-4">
               {results.map((result, index) => (
                 <li
                   key={index}
-                  className="p-3 border rounded bg-gray-50 hover:bg-gray-100 transition"
+                  className="flex items-center justify-between p-3 border rounded bg-gray-50 hover:bg-gray-100 transition"
                 >
-                  <span className="block font-medium text-gray-700">
-                    {languageMap[result.target_language] || result.target_language}:
-                  </span>
-                  <span className="text-gray-900">{result.translated_word}</span>
+                  <div>
+                    <span className="block font-medium text-gray-700">
+                      {languageMap[result.target_language] || result.target_language}:
+                    </span>
+                    <span className="text-gray-900">{result.translated_word}</span>
+                  </div>
+                  <button
+                    onClick={() =>
+                      navigate(`/update-word/${result.word_id}`, { state: result })
+                    }
+                    className="bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600"
+                  >
+                    Edit
+                  </button>
                 </li>
               ))}
             </ul>

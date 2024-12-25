@@ -88,7 +88,7 @@ function UpdateWordPage() {
         if (translationError) throw translationError;
       }
 
-      navigate("/searchbar");
+      navigate("/dictionary");
     } catch (err) {
       console.error("Error updating word or translations:", err);
       setError("An error occurred while updating the word.");
