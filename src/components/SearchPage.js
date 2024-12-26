@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { FaSearch } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom';
-import { supabase } from '../supabaseClient';
+import React, { useState, useEffect } from "react";
+import { FaSearch } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+import { supabase } from "../supabaseClient";
 
 function SearchPage() {
-  const [query, setQuery] = useState('');
-  const [selectedLanguage, setSelectedLanguage] = useState('gz'); // Default to Ge'ez
+  const [query, setQuery] = useState("");
+  const [selectedLanguage, setSelectedLanguage] = useState("gz"); // Default to Ge'ez
   const [languages, setLanguages] = useState([]);
   const [results, setResults] = useState([]);
   const [suggestions, setSuggestions] = useState([]);
@@ -17,14 +17,14 @@ function SearchPage() {
   useEffect(() => {
     const fetchLanguages = async () => {
       try {
-        const { data, error } = await supabase.from('languages').select('*');
+        const { data, error } = await supabase.from("languages").select("*");
         if (error) {
-          console.error('Error fetching languages:', error);
+          console.error("Error fetching languages:", error);
         } else {
           setLanguages(data);
         }
       } catch (err) {
-        console.error('Unexpected error:', err);
+        console.error("Unexpected error:", err);
       }
     };
 
@@ -46,26 +46,26 @@ function SearchPage() {
 
     try {
       const { data, error } = await supabase
-        .from('words')
-        .select('word')
-        .eq('language_code', selectedLanguage)
-        .ilike('word', `${value}%`) // Match words starting with the input
+        .from("words")
+        .select("word")
+        .eq("language_code", selectedLanguage)
+        .ilike("word", `${value}%`) // Match words starting with the input
         .limit(5); // Limit suggestions to 5
 
       if (error) {
-        console.error('Error fetching suggestions:', error);
+        console.error("Error fetching suggestions:", error);
       } else {
         setSuggestions(data.map((item) => item.word));
       }
     } catch (err) {
-      console.error('Unexpected error fetching suggestions:', err);
+      console.error("Unexpected error fetching suggestions:", err);
     }
   };
 
   // Handle search functionality
   const handleSearch = async () => {
     if (!query.trim() || !selectedLanguage) {
-      setError('Please enter a search term and select a language.');
+      setError("Please enter a search term and select a language.");
       return;
     }
 
@@ -73,22 +73,33 @@ function SearchPage() {
     setError(null);
 
     try {
-      const { data, error } = await supabase.rpc('get_translations', {
+      const { data, error } = await supabase.rpc("get_translations", {
         search_word: `%${query}%`,
         language: selectedLanguage,
       });
 
       if (error) {
-        setError('Failed to fetch data. Please try again.');
+        setError("Failed to fetch data. Please try again.");
         console.error(error);
       } else {
         setResults(data);
       }
     } catch (err) {
-      setError('An unexpected error occurred.');
+      setError("An unexpected error occurred.");
       console.error(err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  // Navigate to the edit page with the ID of the searched word
+  const handleEditClick = () => {
+    if (results.length > 0) {
+      navigate(`/update-word/${results[0].word_id}`, {
+        state: { wordId: results[0].word_id },
+      });
+    } else {
+      setError("No results to edit.");
     }
   };
 
@@ -128,7 +139,7 @@ function SearchPage() {
           <FaSearch className="absolute left-4 text-blue-500 text-xl" />
         </div>
         {suggestions.length > 0 && (
-          <ul className="block left-0 right-0 mt-2 bg-white border rounded-lg shadow-lg z-10">
+          <ul className="absolute bg-white border rounded-lg shadow-lg mt-2 w-full z-10">
             {suggestions.map((suggestion, index) => (
               <li
                 key={index}
@@ -158,35 +169,41 @@ function SearchPage() {
       {error && <p className="text-red-500 mt-4">{error}</p>}
 
       {/* Results Display */}
-      <div className="mt-8 w-full max-w-lg">
+      <div className="mt-8 w-full max-w-3xl">
         {results.length > 0 ? (
           <div className="p-6 border rounded-lg shadow-xl bg-white">
-            <h2 className="text-2xl font-semibold text-gray-800 mb-4">
-              Word: <span className="text-blue-600">{results[0].word}</span>
-            </h2>
-            <ul className="space-y-4">
-              {results.map((result, index) => (
-                <li
-                  key={index}
-                  className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 border rounded-lg bg-blue-50 hover:bg-blue-100 transition shadow-sm"
-                >
-                  <div>
-                    <p className="text-sm font-semibold text-blue-700">
-                      {languageMap[result.target_language] || result.target_language}
-                    </p>
-                    <p className="text-lg text-gray-900">{result.translated_word}</p>
-                  </div>
-                  <button
-                    onClick={() =>
-                      navigate(`/update-word/${result.word_id}`, { state: result })
-                    }
-                    className="bg-blue-600 text-white px-5 py-2 mt-2 sm:mt-0 rounded-lg shadow hover:bg-blue-700"
-                  >
-                    Edit
-                  </button>
-                </li>
-              ))}
-            </ul>
+            <h2 className="text-2xl font-semibold text-gray-800 mb-4">Results:</h2>
+            <table className="table-auto w-full text-left">
+              <thead>
+                <tr className="border-b-2 border-gray-200">
+                  <th className="p-2 text-blue-600">Language</th>
+                  <th className="p-2 text-blue-600">Translations</th>
+                </tr>
+              </thead>
+              <tbody>
+                {Object.entries(
+                  results.reduce((acc, result) => {
+                    const lang =
+                      languageMap[result.target_language] ||
+                      result.target_language;
+                    if (!acc[lang]) acc[lang] = [];
+                    acc[lang].push(result.translated_word);
+                    return acc;
+                  }, {})
+                ).map(([language, words], index) => (
+                  <tr key={index} className="border-b border-gray-100">
+                    <td className="p-2 font-medium text-gray-700">{language}</td>
+                    <td className="p-2 text-gray-700">{words.join(", ")}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <button
+              onClick={handleEditClick}
+              className="mt-6 w-full bg-blue-600 text-white py-3 rounded-lg shadow-lg hover:bg-blue-700"
+            >
+              Edit Result
+            </button>
           </div>
         ) : (
           !loading && query.trim() && (

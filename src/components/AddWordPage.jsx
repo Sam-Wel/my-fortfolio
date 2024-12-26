@@ -16,6 +16,61 @@ const AddWordPage = () => {
     setWordData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const getOrInsertWord = async (word, language_code) => {
+    try {
+      const { data: existingWord, error: fetchError } = await supabase
+        .from("words")
+        .select("word_id")
+        .eq("word", word)
+        .eq("language_code", language_code)
+        .single();
+
+      if (fetchError && fetchError.code !== "PGRST116") {
+        throw fetchError;
+      }
+
+      if (existingWord) {
+        return existingWord.word_id;
+      }
+
+      const { data: newWord, error: insertError } = await supabase
+        .from("words")
+        .insert([{ word, language_code }])
+        .select()
+        .single();
+
+      if (insertError) {
+        throw insertError;
+      }
+
+      return newWord.word_id;
+    } catch (err) {
+      throw new Error(`Error handling word '${word}' (${language_code}): ${err.message}`);
+    }
+  };
+
+  const insertMappings = async (wordId, relatedWordIds) => {
+    try {
+      const mappings = relatedWordIds.map((relatedWordId) => ({
+        word_id: wordId,
+        related_word_id: relatedWordId,
+      }));
+  
+      if (mappings.length > 0) {
+        const { error: mappingError } = await supabase
+          .from("translationmappings")
+          .upsert(mappings, { onConflict: ["word_id", "related_word_id"] });
+  
+        if (mappingError) {
+          throw new Error(`Error inserting/updating mappings: ${mappingError.message}`);
+        }
+      }
+    } catch (err) {
+      throw new Error(`Error creating mappings: ${err.message}`);
+    }
+  };
+  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
@@ -23,40 +78,40 @@ const AddWordPage = () => {
 
     const { geez, tigrinya, amharic, english } = wordData;
 
-    if (!geez || !tigrinya || !amharic || !english) {
-      setError("All fields are required.");
+    if (!geez) {
+      setError("The Ge'ez word is required.");
       return;
     }
 
     try {
-      // Insert Ge'ez word
-      const { data: geezWord, error: geezError } = await supabase
-        .from("words")
-        .insert([{ word: geez, language_code: "gz" }])
-        .select();
+      const wordEntries = [];
 
-      if (geezError) throw geezError;
+      const addWordIfProvided = async (word, languageCode) => {
+        if (word) {
+          const wordId = await getOrInsertWord(word, languageCode);
+          wordEntries.push({ id: wordId, word, languageCode });
+        }
+      };
 
-      const geezWordId = geezWord[0]?.word_id;
+      await addWordIfProvided(geez, "gz");
+      await addWordIfProvided(tigrinya, "ti");
+      await addWordIfProvided(amharic, "am");
+      await addWordIfProvided(english, "en");
 
-      // Insert translations for Ge'ez word
-      const translations = [
-        { word_id: geezWordId, translated_word: tigrinya, target_language: "ti" },
-        { word_id: geezWordId, translated_word: amharic, target_language: "am" },
-        { word_id: geezWordId, translated_word: english, target_language: "en" },
-      ];
+      for (let i = 0; i < wordEntries.length; i++) {
+        const wordId = wordEntries[i].id;
+        const relatedWordIds = wordEntries
+          .filter((entry, index) => index !== i)
+          .map((entry) => entry.id);
 
-      const { error: translationsError } = await supabase
-        .from("translations")
-        .insert(translations);
+        await insertMappings(wordId, relatedWordIds);
+      }
 
-      if (translationsError) throw translationsError;
-
-      setSuccess("Word and translations added successfully!");
+      setSuccess("Word(s) and mappings added successfully!");
       setWordData({ geez: "", tigrinya: "", amharic: "", english: "" });
     } catch (err) {
       console.error("Error adding word:", err);
-      setError("Failed to add the word. Please try again.");
+      setError(`Failed to add the word(s): ${err.message}`);
     }
   };
 
@@ -95,6 +150,7 @@ const AddWordPage = () => {
                 onChange={handleChange}
                 className="w-full px-4 py-3 border rounded-lg shadow-sm focus:outline-none focus:ring focus:border-blue-400 text-gray-700"
                 placeholder={`Enter word in ${lang}`}
+                required={lang === "geez"} // Ge'ez is required
               />
             </div>
           ))}
