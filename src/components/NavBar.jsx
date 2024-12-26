@@ -59,7 +59,7 @@ const NavBar = () => {
       href: "/FESSEHAYE, SAMUEL_RESUME_Updated.pdf",
       download: true,
     },
-    { id: 5, icon: <FaInstagram />, href: "https://www.instagram.com/samuel_weldemichael/" },
+    { id: 5, icon: <FaInstagram />, href: "https://www.instagram.com/sammy_wel_f/" },
     { id: 6, icon: <FaFacebook />, href: "https://www.facebook.com/profile.php?id=100008395952926" },
     { id: 7, icon: <FaTwitter />, href: "https://twitter.com/SamuelWeldemic5" },
   ];

@@ -176,14 +176,14 @@ function SearchPage() {
                     </p>
                     <p className="text-lg text-gray-900">{result.translated_word}</p>
                   </div>
-                  {/* <button
+                  <button
                     onClick={() =>
                       navigate(`/update-word/${result.word_id}`, { state: result })
                     }
                     className="bg-blue-600 text-white px-5 py-2 mt-2 sm:mt-0 rounded-lg shadow hover:bg-blue-700"
                   >
                     Edit
-                  </button> */}
+                  </button>
                 </li>
               ))}
             </ul>
