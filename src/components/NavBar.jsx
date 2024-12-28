@@ -10,7 +10,7 @@ import {
 } from "react-icons/fa";
 import { HiOutlineMail } from "react-icons/hi";
 import { BsFillPersonLinesFill } from "react-icons/bs";
-import { Link, scroller } from "react-scroll";
+import { scroller } from "react-scroll";
 import { useNavigate } from "react-router-dom";
 
 const NavBar = () => {
