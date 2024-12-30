@@ -3,8 +3,8 @@ import { supabase } from "../util/supabaseClient";
 
 const DictionaryGame = () => {
   const [gameStarted, setGameStarted] = useState(false);
-  const [languageCode, setLanguageCode] = useState("ti"); // Default to Tigrinya
-  const [suffix, setSuffix] = useState("ነ"); // Default suffix
+  const [languageCode, setLanguageCode] = useState("am"); // Default to Tigrinya
+  const [suffix, setSuffix] = useState("ሐ"); // Default suffix
   const [geezWords, setGeezWords] = useState([]);
   const [translations, setTranslations] = useState([]);
   const [currentChallengeIndex, setCurrentChallengeIndex] = useState(0);
@@ -21,16 +21,25 @@ const DictionaryGame = () => {
         .eq("language_code", "gz")
         .ilike("word", `%${suffix}`);
   
-      if (wordsError || wordsData.length === 0) {
+      if (wordsError) {
         console.error("Error fetching Ge'ez words:", wordsError);
-        alert("No words found with the selected suffix.");
+        alert("Error fetching Ge'ez words. Please try again.");
         return;
       }
   
+      if (!wordsData || wordsData.length === 0) {
+        console.warn(`No words found with suffix '${suffix}'.`);
+        alert(`No words found with suffix '${suffix}'.`);
+        return;
+      }
+  
+      console.log("Fetched Ge'ez Words:", wordsData);
       setGeezWords(wordsData);
   
-      // Fetch translations for all Ge'ez words explicitly specifying the join
+      // Fetch translations for all Ge'ez words
       const geezWordIds = wordsData.map((word) => word.word_id);
+      console.log("Ge'ez Word IDs:", geezWordIds);
+  
       const { data: translationsData, error: translationsError } = await supabase
         .from("translationmappings")
         .select(
@@ -43,12 +52,19 @@ const DictionaryGame = () => {
         .in("word_id", geezWordIds)
         .eq("words.language_code", languageCode);
   
-      if (translationsError || translationsData.length === 0) {
+      if (translationsError) {
         console.error("Error fetching translations:", translationsError);
+        alert("Error fetching translations. Please try again.");
+        return;
+      }
+  
+      if (!translationsData || translationsData.length === 0) {
+        console.warn("No translations found for the fetched words.");
         alert("No translations found for the selected language.");
         return;
       }
   
+      console.log("Fetched Translations:", translationsData);
       setTranslations(translationsData);
   
       // Start the first challenge
@@ -68,32 +84,47 @@ const DictionaryGame = () => {
       const currentTranslations = translations.filter(
         (t) => t.word_id === geezWord.word_id
       );
-  
+
       if (currentTranslations.length === 0) {
-        console.error(`No translations found for Ge'ez word: ${geezWord.word}`);
+        console.warn(`No translations found for Ge'ez word: ${geezWord.word}`);
+        const nextIndex = currentChallengeIndex + 1;
+        if (nextIndex < geezWords.length) {
+          setCurrentChallengeIndex(nextIndex);
+          loadChallenge(geezWords[nextIndex], translations);
+        } else {
+          alert("Game Over! No more challenges.");
+          setGameStarted(false);
+        }
         return;
       }
-  
+
       // Select a random correct option
-      const correctTranslation = currentTranslations[0].words;
-  
+      const correctTranslation = currentTranslations[0]?.words;
+
       if (!correctTranslation || !correctTranslation.word) {
-        console.error("Correct translation is missing 'word' property.");
+        console.warn("Correct translation is missing 'word' property.");
+        const nextIndex = currentChallengeIndex + 1;
+        if (nextIndex < geezWords.length) {
+          setCurrentChallengeIndex(nextIndex);
+          loadChallenge(geezWords[nextIndex], translations);
+        } else {
+          alert("Game Over! No more challenges.");
+          setGameStarted(false);
+        }
         return;
       }
-  
+
       const correctOption = correctTranslation.word;
-  
+
       // Create distractors from other translations
       const distractors = translations
         .filter((t) => t.word_id !== geezWord.word_id && t.words?.word)
         .map((t) => t.words.word)
         .slice(0, 5);
-  
+
       // Combine the correct option with distractors and shuffle
       const options = [correctOption, ...distractors].sort(() => Math.random() - 0.5);
-  
-      // Set the current challenge
+
       setCurrentChallenge({
         geez: geezWord.word,
         options,
@@ -103,7 +134,6 @@ const DictionaryGame = () => {
       console.error("Error loading challenge:", error);
     }
   };
-  
 
   const handleAnswer = (option) => {
     const isCorrect = option === currentChallenge.correctOption;
@@ -165,7 +195,6 @@ const DictionaryGame = () => {
           >
             Dictionary Game
           </h1>
-
           <div style={{ marginBottom: "1.5rem" }}>
             <label
               htmlFor="language-select"
@@ -183,7 +212,6 @@ const DictionaryGame = () => {
               <option value="am">Amharic</option>
             </select>
           </div>
-
           <div style={{ marginBottom: "1.5rem" }}>
             <label
               htmlFor="suffix-select"
@@ -204,7 +232,6 @@ const DictionaryGame = () => {
               <option value="ረ">ረ</option>
             </select>
           </div>
-
           <button
             style={{ ...buttonStyle, background: "#007bff", color: "white" }}
             onClick={startGame}
