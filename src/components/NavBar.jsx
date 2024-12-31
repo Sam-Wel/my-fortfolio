@@ -43,6 +43,7 @@ const NavBar = () => {
     { id: 5, label: "Hobby", path: "/hobby" },
     { id: 6, label: "Dictionary", path: "/dictionary" },
     { id: 7, label: "Add Word", path: "/add-word" },
+    { id: 7, label: "Dictionary Game", path: "/game" },
   ];
 
   const socials = [
