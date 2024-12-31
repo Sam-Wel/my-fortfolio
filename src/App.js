@@ -5,6 +5,11 @@ import AddWordPage from "./components/AddWordPage";
 import UpdateWordPage from "./components/UpdateWordPage";
 import SearchPage from "./components/SearchPage";
 import DictionaryGame from "./components/DictionaryGame";
+import AddBlogPost from "./components/AddBlogPost";
+import BlogList from "./components/BlogList";
+import UpdateBlogPost from "./components/UpdateBlogPost";
+
+
 
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
@@ -21,6 +26,9 @@ function App() {
             <Route path="/add-word" element={<AddWordPage />} />
             <Route path="/update-word/:id" element={<UpdateWordPage />} />
             <Route path="/game" element={<DictionaryGame />} />
+            <Route path="/blog" element={<BlogList />} />
+            <Route path="/add-blog" element={<AddBlogPost />} />
+            <Route path="/update-blog/:id" element={<UpdateBlogPost />} />
           </Routes>
         </div>
       </div>
