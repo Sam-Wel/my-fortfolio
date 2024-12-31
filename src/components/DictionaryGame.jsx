@@ -135,12 +135,20 @@ const DictionaryGame = () => {
       // Create unique distractors
       const distractors = [...new Set(
         translations
-          .filter((t) => t.word_id !== geezWord.word_id && t.words?.word)
+          .filter((t) => t.word_id !== geezWord.word_id && t.words?.word && t.words.word !== correctOption)
           .map((t) => t.words.word)
-      )].slice(0, 5);
+      )];
+  
+      // If there aren't enough distractors, fetch more translations for variability
+      while (distractors.length < 5) {
+        const randomExtra = translations[Math.floor(Math.random() * translations.length)];
+        if (randomExtra?.words?.word && !distractors.includes(randomExtra.words.word) && randomExtra.words.word !== correctOption) {
+          distractors.push(randomExtra.words.word);
+        }
+      }
   
       // Combine the correct option with distractors and shuffle
-      const options = [correctOption, ...distractors].sort(() => Math.random() - 0.5);
+      const options = [correctOption, ...distractors.slice(0, 5)].sort(() => Math.random() - 0.5);
   
       setCurrentChallenge({
         geez: geezWord.word,
@@ -151,6 +159,7 @@ const DictionaryGame = () => {
       console.error("Error loading challenge:", error);
     }
   };
+  
   
   
   // Helper function to find and load the next challenge
