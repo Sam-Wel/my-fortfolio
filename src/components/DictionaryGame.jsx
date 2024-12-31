@@ -173,6 +173,7 @@ const DictionaryGame = () => {
       setScore((prevScore) => prevScore + 1);
     }
     setUserAnswer(option);
+
     setTimeout(() => {
       setUserAnswer(null);
       const nextIndex = currentChallengeIndex + 1;
@@ -189,129 +190,163 @@ const DictionaryGame = () => {
   };
 
   const containerStyle = {
+    paddingTop: "3rem", // For navbar spacing
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
-    height: "100vh",
-    background: "linear-gradient(to bottom, #f9f9f9, #eaeaea)",
+    minHeight: "100vh",
+    background: "linear-gradient(to bottom, #f8f9fa, #e9ecef)",
+    fontFamily: "'Roboto', sans-serif",
+    color: "#333",
+    padding: "2rem",
   };
 
-  const buttonStyle = {
-    padding: "1rem 2rem",
+  const cardStyle = {
+    background: "white",
+    padding: "2rem",
+    borderRadius: "15px",
+    boxShadow: "0 8px 20px rgba(0, 0, 0, 0.1)",
+    textAlign: "center",
+    width: "90%",
+    maxWidth: "500px",
+  };
+
+  const welcomeTitleStyle = {
+    fontSize: "2.5rem",
+    fontWeight: "bold",
+    marginBottom: "1rem",
+    color: "#495057",
+  };
+
+  const labelStyle = {
+    fontSize: "1rem",
+    marginRight: "1rem",
+    color: "#495057",
+  };
+
+  const selectStyle = {
+    padding: "0.5rem",
+    fontSize: "1rem",
+    borderRadius: "5px",
+    border: "1px solid #ced4da",
+    marginBottom: "1rem",
+  };
+
+  const startButtonStyle = {
+    padding: "0.8rem 1.5rem",
     fontSize: "1.2rem",
     fontWeight: "bold",
+    color: "#fff",
+    backgroundColor: "#007bff",
     border: "none",
     borderRadius: "8px",
     cursor: "pointer",
-    transition: "all 0.3s ease",
+    transition: "background-color 0.3s ease",
+  };
+
+  const startButtonHoverStyle = {
+    ...startButtonStyle,
+    backgroundColor: "#0056b3",
+  };
+
+  const optionButtonStyle = (option) => ({
+    padding: "0.5rem 1rem",
+    fontSize: "0.9rem",
+    border: "1px solid #dee2e6",
+    borderRadius: "5px",
+    textAlign: "center",
+    cursor: "pointer",
+    backgroundColor: userAnswer
+      ? option === currentChallenge.correctOption
+        ? "#d4edda"
+        : option === userAnswer
+        ? "#f8d7da"
+        : "#fff"
+      : "#fff",
+    color: "#495057",
+    flex: "1 1 calc(30% - 1rem)",
+    margin: "0.5rem",
+    transition: "background-color 0.3s ease, border-color 0.3s ease",
+  });
+
+  const geezWordStyle = {
+    fontSize: "2rem",
+    fontWeight: "bold",
+    color: "#212529",
+    marginBottom: "1.5rem",
   };
 
   const scoreStyle = {
-    fontSize: "1.5rem",
-    marginTop: "2rem",
-    color: "#444",
+    fontSize: ".8rem",
+    fontWeight: "bold",
+    marginTop: "1rem",
+    color: "#495057",
+  };
+
+  const gridStyle = {
+    display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "center",
+    gap: "1rem",
   };
 
   return (
     <div style={containerStyle}>
       {!gameStarted ? (
-        <div>
-          <h1
-            style={{
-              fontSize: "2.5rem",
-              fontWeight: "bold",
-              color: "#3a3a3a",
-              marginBottom: "1.5rem",
-            }}
+        <div style={cardStyle}>
+          <h1 style={welcomeTitleStyle}>Dictionary Game</h1>
+          <p style={{ marginBottom: "1rem", fontSize: "1rem", color: "#6c757d" }}>
+            Test your knowledge of Ge'ez words and their translations.
+          </p>
+          <label htmlFor="language-select" style={labelStyle}>
+            Select Language:
+          </label>
+          <select
+            id="language-select"
+            value={languageCode}
+            onChange={(e) => setLanguageCode(e.target.value)}
+            style={selectStyle}
           >
-            Dictionary Game
-          </h1>
-          <div style={{ marginBottom: "1.5rem" }}>
-            <label
-              htmlFor="language-select"
-              style={{ fontSize: "1.2rem", marginRight: "1rem" }}
-            >
-              Choose Language for Options:
-            </label>
-            <select
-              id="language-select"
-              value={languageCode}
-              onChange={(e) => setLanguageCode(e.target.value)}
-              style={{ padding: "0.5rem", fontSize: "1rem" }}
-            >
-              <option value="ti">Tigrinya</option>
-              <option value="am">Amharic</option>
-            </select>
-          </div>
-          <div style={{ marginBottom: "1.5rem" }}>
-            <label
-              htmlFor="suffix-select"
-              style={{ fontSize: "1.2rem", marginRight: "1rem" }}
-            >
-              Choose Suffix for Ge'ez Words:
-            </label>
-            <select
-              id="suffix-select"
-              value={suffix}
-              onChange={(e) => setSuffix(e.target.value)}
-              style={{ padding: "0.5rem", fontSize: "1rem" }}
-            >
-              <option value="ሐ">ሐ</option>
-              <option value="ለ">ለ</option>
-              <option value="መ">መ</option>
-              <option value="ነ">ነ</option>
-              <option value="ረ">ረ</option>
-            </select>
-          </div>
+            <option value="ti">Tigrinya</option>
+            <option value="am">Amharic</option>
+          </select>
+          <br />
+          <label htmlFor="suffix-select" style={labelStyle}>
+            Select Suffix:
+          </label>
+          <select
+            id="suffix-select"
+            value={suffix}
+            onChange={(e) => setSuffix(e.target.value)}
+            style={selectStyle}
+          >
+            <option value="ሐ">ሐ</option>
+            <option value="ለ">ለ</option>
+            <option value="መ">መ</option>
+            <option value="ነ">ነ</option>
+            <option value="ረ">ረ</option>
+          </select>
+          <br />
           <button
-            style={{ ...buttonStyle, background: "#007bff", color: "white" }}
+            style={startButtonStyle}
+            onMouseEnter={(e) => (e.target.style.backgroundColor = "#0056b3")}
+            onMouseLeave={(e) => (e.target.style.backgroundColor = "#007bff")}
             onClick={startGame}
           >
-            Play
+            Start Game
           </button>
         </div>
       ) : (
-        <div>
+        <div style={cardStyle}>
           {currentChallenge ? (
             <>
-              <h2
-                style={{
-                  fontSize: "2rem",
-                  marginBottom: "1.5rem",
-                  color: "#555",
-                }}
-              >
-                Ge'ez Word: {currentChallenge.geez}
-              </h2>
-              <div
-                style={{
-                  display: "flex",
-                  flexWrap: "wrap",
-                  justifyContent: "center",
-                  gap: "1rem",
-                }}
-              >
+              <h2 style={geezWordStyle}>{currentChallenge.geez}</h2>
+              <div style={gridStyle}>
                 {currentChallenge.options.map((option, index) => (
                   <button
                     key={index}
-                    style={{
-                      ...buttonStyle,
-                      background: userAnswer
-                        ? option === currentChallenge.correctOption
-                          ? "#28a745"
-                          : option === userAnswer
-                          ? "#dc3545"
-                          : "#f9f9f9"
-                        : "#f9f9f9",
-                      color: userAnswer
-                        ? option === currentChallenge.correctOption ||
-                          option === userAnswer
-                          ? "white"
-                          : "#333"
-                        : "#333",
-                      border: "2px solid #ccc",
-                    }}
+                    style={optionButtonStyle(option)}
                     onClick={() => handleAnswer(option)}
                     disabled={!!userAnswer}
                   >
