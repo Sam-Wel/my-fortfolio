@@ -34,12 +34,9 @@ const DictionaryGame = () => {
       }
   
       console.log("Fetched Ge'ez Words:", wordsData);
-      setGeezWords(wordsData);
   
       // Fetch translations for all Ge'ez words
       const geezWordIds = wordsData.map((word) => word.word_id);
-      console.log("Ge'ez Word IDs:", geezWordIds);
-  
       const { data: translationsData, error: translationsError } = await supabase
         .from("translationmappings")
         .select(
@@ -64,7 +61,23 @@ const DictionaryGame = () => {
         return;
       }
   
-      console.log("Fetched Translations:", translationsData);
+      // Filter valid words with at least one valid translation
+      const validWords = wordsData.filter((word) =>
+        translationsData.some(
+          (t) => t.word_id === word.word_id && t.words?.word
+        )
+      );
+  
+      if (!validWords.length) {
+        console.warn("No valid words with translations found.");
+        alert("No valid words with translations found for the selected language.");
+        return;
+      }
+  
+      console.log("Filtered Valid Words:", validWords);
+  
+      // Update state with valid data
+      setGeezWords(validWords);
       setTranslations(translationsData);
   
       // Start the first challenge
@@ -72,21 +85,23 @@ const DictionaryGame = () => {
       setScore(0);
       setGameStarted(true);
       setUserAnswer(null);
-      loadChallenge(wordsData[0], translationsData);
+      loadChallenge(validWords[0], translationsData);
     } catch (error) {
       console.error("Error starting game:", error);
     }
   };
   
+  
+  
   const loadChallenge = (geezWord, translations) => {
     try {
-      // Find the translations for the current Ge'ez word
+      // Find valid translations for the current Ge'ez word
       const currentTranslations = translations.filter(
-        (t) => t.word_id === geezWord.word_id
+        (t) => t.word_id === geezWord.word_id && t.words?.word
       );
-
+  
       if (currentTranslations.length === 0) {
-        console.warn(`No translations found for Ge'ez word: ${geezWord.word}`);
+        console.warn(`No valid translations found for Ge'ez word: ${geezWord.word}`);
         const nextIndex = currentChallengeIndex + 1;
         if (nextIndex < geezWords.length) {
           setCurrentChallengeIndex(nextIndex);
@@ -97,10 +112,11 @@ const DictionaryGame = () => {
         }
         return;
       }
-
-      // Select a random correct option
-      const correctTranslation = currentTranslations[0]?.words;
-
+  
+      // Randomly select one correct translation
+      const randomIndex = Math.floor(Math.random() * currentTranslations.length);
+      const correctTranslation = currentTranslations[randomIndex]?.words;
+  
       if (!correctTranslation || !correctTranslation.word) {
         console.warn("Correct translation is missing 'word' property.");
         const nextIndex = currentChallengeIndex + 1;
@@ -113,18 +129,19 @@ const DictionaryGame = () => {
         }
         return;
       }
-
+  
       const correctOption = correctTranslation.word;
-
-      // Create distractors from other translations
-      const distractors = translations
-        .filter((t) => t.word_id !== geezWord.word_id && t.words?.word)
-        .map((t) => t.words.word)
-        .slice(0, 5);
-
+  
+      // Create unique distractors
+      const distractors = [...new Set(
+        translations
+          .filter((t) => t.word_id !== geezWord.word_id && t.words?.word)
+          .map((t) => t.words.word)
+      )].slice(0, 5);
+  
       // Combine the correct option with distractors and shuffle
       const options = [correctOption, ...distractors].sort(() => Math.random() - 0.5);
-
+  
       setCurrentChallenge({
         geez: geezWord.word,
         options,
@@ -134,6 +151,21 @@ const DictionaryGame = () => {
       console.error("Error loading challenge:", error);
     }
   };
+  
+  
+  // Helper function to find and load the next challenge
+  const findNextChallenge = (translations) => {
+    const nextIndex = currentChallengeIndex + 1;
+    if (nextIndex < geezWords.length) {
+      setCurrentChallengeIndex(nextIndex);
+      loadChallenge(geezWords[nextIndex], translations);
+    } else {
+      alert("Game Over! No more challenges.");
+      setGameStarted(false);
+    }
+  };
+  
+  
 
   const handleAnswer = (option) => {
     const isCorrect = option === currentChallenge.correctOption;
