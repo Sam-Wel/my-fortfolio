@@ -35,8 +35,14 @@ const DictionaryGame = () => {
   
       console.log("Fetched Ge'ez Words:", wordsData);
   
+      // Shuffle the Ge'ez words
+      const shuffledWords = wordsData.sort(() => Math.random() - 0.5);
+      setGeezWords(shuffledWords);
+  
       // Fetch translations for all Ge'ez words
-      const geezWordIds = wordsData.map((word) => word.word_id);
+      const geezWordIds = shuffledWords.map((word) => word.word_id);
+      console.log("Ge'ez Word IDs:", geezWordIds);
+  
       const { data: translationsData, error: translationsError } = await supabase
         .from("translationmappings")
         .select(
@@ -61,23 +67,7 @@ const DictionaryGame = () => {
         return;
       }
   
-      // Filter valid words with at least one valid translation
-      const validWords = wordsData.filter((word) =>
-        translationsData.some(
-          (t) => t.word_id === word.word_id && t.words?.word
-        )
-      );
-  
-      if (!validWords.length) {
-        console.warn("No valid words with translations found.");
-        alert("No valid words with translations found for the selected language.");
-        return;
-      }
-  
-      console.log("Filtered Valid Words:", validWords);
-  
-      // Update state with valid data
-      setGeezWords(validWords);
+      console.log("Fetched Translations:", translationsData);
       setTranslations(translationsData);
   
       // Start the first challenge
@@ -85,11 +75,12 @@ const DictionaryGame = () => {
       setScore(0);
       setGameStarted(true);
       setUserAnswer(null);
-      loadChallenge(validWords[0], translationsData);
+      loadChallenge(shuffledWords[0], translationsData);
     } catch (error) {
       console.error("Error starting game:", error);
     }
   };
+  
   
   
   
