@@ -123,16 +123,19 @@ const DictionaryGame = () => {
   
       const correctOption = correctTranslation.word;
   
-      // Create unique distractors
+      // Shuffle translations to randomize distractor selection
+      const shuffledTranslations = [...translations].sort(() => Math.random() - 0.5);
+  
+      // Create unique distractors that do not repeat
       const distractors = [...new Set(
-        translations
+        shuffledTranslations
           .filter((t) => t.word_id !== geezWord.word_id && t.words?.word && t.words.word !== correctOption)
           .map((t) => t.words.word)
       )];
   
-      // If there aren't enough distractors, fetch more translations for variability
+      // Ensure at least 5 distractors are available
       while (distractors.length < 5) {
-        const randomExtra = translations[Math.floor(Math.random() * translations.length)];
+        const randomExtra = shuffledTranslations[Math.floor(Math.random() * shuffledTranslations.length)];
         if (randomExtra?.words?.word && !distractors.includes(randomExtra.words.word) && randomExtra.words.word !== correctOption) {
           distractors.push(randomExtra.words.word);
         }
