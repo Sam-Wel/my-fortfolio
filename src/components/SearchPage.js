@@ -207,7 +207,7 @@ function SearchPage() {
                 ).map(([language, words], index) => (
                   <tr key={index} className="border-b border-gray-100">
                     <td className="p-2 font-medium text-gray-700">{language}</td>
-                    <td className="p-2 text-gray-700">{words.join(", ")}</td>
+                    <td className="p-2 text-gray-700">{words.join("፡ ")}</td>
                   </tr>
                 ))}
               </tbody>
