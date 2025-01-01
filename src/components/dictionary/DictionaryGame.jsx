@@ -310,14 +310,14 @@ const DictionaryGame = () => {
             <option value="ሐ">ሐ</option>
             <option value="ሀ">ሀ</option>
             <option value="ኀ">ኀ</option>
-            <option value="ለ">ለ</option>
+            {/* <option value="ለ">ለ</option>
             <option value="መ">መ</option>
             <option value="ሰ">ሰ</option>
             <option value="ሠ">ሠ</option>
             <option value="ረ">ረ</option>
             <option value="ቀ">ቀ</option>
             <option value="በ">በ</option>
-            <option value="በ">ተ</option>
+            <option value="ተ">ተ</option> */}
             <option value="ነ">ነ</option>
             <option value="ዐ">ዐ</option>
             <option value="አ">አ</option>
