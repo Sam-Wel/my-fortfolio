@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { supabase } from "../util/supabaseClient";
+import { supabase } from "../../util/supabaseClient";
 
 const DictionaryGame = () => {
   const [gameStarted, setGameStarted] = useState(false);
@@ -155,20 +155,6 @@ const DictionaryGame = () => {
   };
   
   
-  
-  // Helper function to find and load the next challenge
-  const findNextChallenge = (translations) => {
-    const nextIndex = currentChallengeIndex + 1;
-    if (nextIndex < geezWords.length) {
-      setCurrentChallengeIndex(nextIndex);
-      loadChallenge(geezWords[nextIndex], translations);
-    } else {
-      alert("Game Over! No more challenges.");
-      setGameStarted(false);
-    }
-  };
-  
-  
 
   const handleAnswer = (option) => {
     const isCorrect = option === currentChallenge.correctOption;
@@ -248,10 +234,7 @@ const DictionaryGame = () => {
     transition: "background-color 0.3s ease",
   };
 
-  const startButtonHoverStyle = {
-    ...startButtonStyle,
-    backgroundColor: "#0056b3",
-  };
+
 
   const optionButtonStyle = (option) => ({
     padding: "0.5rem 1rem",

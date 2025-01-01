@@ -1,8 +1,8 @@
 import React from "react";
 import profile from "../assets/profile1.png";
-import About from "./About";
-import Experience from "./Experience";
-import Contact from "./Contact";
+import About from "./personal/About";
+import Experience from "./personal/Experience";
+import Contact from "./personal/Contact";
 
 const Home = () => {
   return (

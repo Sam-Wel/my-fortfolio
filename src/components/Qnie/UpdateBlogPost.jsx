@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { supabase } from "../util/supabaseClient";
+import { supabase } from "../../util/supabaseClient";
 
 const UpdateBlogPost = () => {
   const { id } = useParams(); // Get the blog post ID from the URL

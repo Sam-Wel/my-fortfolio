@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { supabase } from "../util/supabaseClient";
+import { supabase } from "../../util/supabaseClient";
 
 function UpdateWordPage() {
   const { id } = useParams();
@@ -31,18 +31,17 @@ function UpdateWordPage() {
   useEffect(() => {
     const fetchWordData = async () => {
       try {
-        // Fetch data using the RPC function
         const { data, error } = await supabase.rpc("get_word_with_translations", {
           word_id: id,
         });
-  
+
         if (error) throw error;
-  
+
         if (data && data.length > 0) {
           const mainWordData = data[0];
           setMainWord(mainWordData.main_word);
           setMainLanguage(mainWordData.main_language_code);
-  
+
           const translationData = data
             .filter((item) => item.related_word_id) // Exclude rows without related words
             .map((item) => ({
@@ -50,7 +49,7 @@ function UpdateWordPage() {
               translated_word: item.related_word,
               target_language: item.related_language_code,
             }));
-  
+
           setTranslations(translationData);
         }
       } catch (err) {
@@ -58,42 +57,85 @@ function UpdateWordPage() {
         setError("Failed to load the word or translations.");
       }
     };
-  
+
     fetchWordData();
   }, [id]);
-  
-  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
-
+  
     try {
       // Update the main word
       const { error: wordError } = await supabase
         .from("words")
         .update({ word: mainWord })
         .eq("word_id", id);
-
+  
       if (wordError) throw wordError;
-
+  
       // Update translations
-      for (const { word_id, translated_word } of translations) {
+      for (const { word_id, translated_word, target_language } of translations) {
         if (!translated_word) continue;
-
-        // Update the translated word in the words table
-        const { error: updateError } = await supabase
+  
+        // Check if the word already exists
+        const { data: existingWord, error: checkError } = await supabase
           .from("words")
-          .update({ word: translated_word })
-          .eq("word_id", word_id);
-
-        if (updateError) throw updateError;
+          .select("word_id")
+          .eq("word", translated_word)
+          .eq("language_code", target_language)
+          .single();
+  
+        if (checkError && checkError.code !== "PGRST116") {
+          throw checkError;
+        }
+  
+        if (existingWord) {
+          // Update the mapping to use the existing word
+          const { error: mappingError } = await supabase
+            .from("translationmappings")
+            .update({ related_word_id: existingWord.word_id })
+            .match({ word_id: id, related_word_id: word_id });
+  
+          if (mappingError) throw mappingError;
+        } else {
+          // Update the translated word in the `words` table
+          const { error: updateError } = await supabase
+            .from("words")
+            .update({ word: translated_word })
+            .eq("word_id", word_id);
+  
+          if (updateError) throw updateError;
+        }
       }
-
+  
       navigate("/dictionary");
     } catch (err) {
       console.error("Error updating word or translations:", err);
       setError("An error occurred while updating the word or translations.");
+    }
+  };
+  
+
+  const handleDeleteTranslation = async (translationId) => {
+    setError(null);
+
+    try {
+      // Delete the mapping
+      const { error: deleteMappingError } = await supabase
+        .from("translationmappings")
+        .delete()
+        .match({ word_id: id, related_word_id: translationId });
+
+      if (deleteMappingError) throw deleteMappingError;
+
+      // Remove the translation from the UI
+      setTranslations((prevTranslations) =>
+        prevTranslations.filter((t) => t.word_id !== translationId)
+      );
+    } catch (err) {
+      console.error("Error deleting translation:", err);
+      setError("Failed to delete the translation.");
     }
   };
 
@@ -101,13 +143,6 @@ function UpdateWordPage() {
     const updatedTranslations = [...translations];
     updatedTranslations[index][field] = value;
     setTranslations(updatedTranslations);
-  };
-
-  const addTranslationField = () => {
-    setTranslations((prev) => [
-      ...prev,
-      { word_id: null, target_language: "", translated_word: "" },
-    ]);
   };
 
   return (
@@ -140,24 +175,25 @@ function UpdateWordPage() {
                 ?.language_name || translation.target_language}
               :
             </label>
-            <input
-              type="text"
-              value={translation.translated_word}
-              onChange={(e) =>
-                handleTranslationChange(index, "translated_word", e.target.value)
-              }
-              className="w-full p-3 border rounded shadow focus:outline-none focus:ring focus:border-blue-300"
-            />
+            <div className="flex space-x-2">
+              <input
+                type="text"
+                value={translation.translated_word}
+                onChange={(e) =>
+                  handleTranslationChange(index, "translated_word", e.target.value)
+                }
+                className="flex-grow p-3 border rounded shadow focus:outline-none focus:ring focus:border-blue-300"
+              />
+              <button
+                type="button"
+                onClick={() => handleDeleteTranslation(translation.word_id)}
+                className="bg-red-500 text-white px-4 py-2 rounded shadow hover:bg-red-600"
+              >
+                Delete
+              </button>
+            </div>
           </div>
         ))}
-
-        <button
-          type="button"
-          onClick={addTranslationField}
-          className="w-full bg-gray-300 text-gray-700 p-3 rounded shadow hover:bg-gray-400"
-        >
-          Add Translation
-        </button>
 
         <button
           type="submit"

@@ -1,13 +1,13 @@
 import Home from "./components/Home";
-import NavBar from "./components/NavBar";
-import Hobby from "./components/Hobby";
-import AddWordPage from "./components/AddWordPage";
-import UpdateWordPage from "./components/UpdateWordPage";
-import SearchPage from "./components/SearchPage";
-import DictionaryGame from "./components/DictionaryGame";
-import AddBlogPost from "./components/AddBlogPost";
-import BlogList from "./components/BlogList";
-import UpdateBlogPost from "./components/UpdateBlogPost";
+import NavBar from "./components/personal/NavBar";
+import Hobby from "./components/personal/Hobby";
+import AddWordPage from "./components/dictionary/AddWordPage";
+import UpdateWordPage from "./components/dictionary/UpdateWordPage";
+import SearchPage from "./components/dictionary/SearchPage";
+import DictionaryGame from "./components/dictionary/DictionaryGame";
+import AddBlogPost from "./components/Qnie/AddBlogPost";
+import BlogList from "./components/Qnie/BlogList";
+import UpdateBlogPost from "./components/Qnie/UpdateBlogPost";
 
 
 

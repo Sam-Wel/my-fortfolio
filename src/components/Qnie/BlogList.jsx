@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { supabase } from "../util/supabaseClient";
+import { supabase } from "../../util/supabaseClient";
 
 const BlogList = () => {
   const [posts, setPosts] = useState([]);
