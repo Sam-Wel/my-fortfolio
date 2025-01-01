@@ -35,14 +35,8 @@ const DictionaryGame = () => {
   
       console.log("Fetched Ge'ez Words:", wordsData);
   
-      // Shuffle the Ge'ez words
-      const shuffledWords = wordsData.sort(() => Math.random() - 0.5);
-      setGeezWords(shuffledWords);
-  
       // Fetch translations for all Ge'ez words
-      const geezWordIds = shuffledWords.map((word) => word.word_id);
-      console.log("Ge'ez Word IDs:", geezWordIds);
-  
+      const geezWordIds = wordsData.map((word) => word.word_id);
       const { data: translationsData, error: translationsError } = await supabase
         .from("translationmappings")
         .select(
@@ -61,13 +55,38 @@ const DictionaryGame = () => {
         return;
       }
   
-      if (!translationsData || translationsData.length === 0) {
-        console.warn("No translations found for the fetched words.");
-        alert("No translations found for the selected language.");
+      // Separate valid and invalid Ge'ez words
+      const validGeezWords = [];
+      const invalidGeezWords = [];
+  
+      wordsData.forEach((word) => {
+        const hasValidTranslation = translationsData.some(
+          (t) => t.word_id === word.word_id && t.words?.word
+        );
+  
+        if (hasValidTranslation) {
+          validGeezWords.push(word);
+        } else {
+          invalidGeezWords.push(word);
+        }
+      });
+  
+      // Log words with no valid translations
+      if (invalidGeezWords.length > 0) {
+        console.warn("Ge'ez Words with No Valid Translations:", invalidGeezWords);
+      }
+  
+      if (validGeezWords.length === 0) {
+        console.warn("No valid translations found for the selected suffix.");
+        alert("No valid translations found for the selected suffix.");
         return;
       }
   
-      console.log("Fetched Translations:", translationsData);
+      console.log("Filtered Valid Ge'ez Words:", validGeezWords);
+  
+      // Shuffle the Ge'ez words
+      const shuffledWords = validGeezWords.sort(() => Math.random() - 0.5);
+      setGeezWords(shuffledWords);
       setTranslations(translationsData);
   
       // Start the first challenge
@@ -84,6 +103,8 @@ const DictionaryGame = () => {
   
   
   
+  
+  
   const loadChallenge = (geezWord, translations) => {
     try {
       // Find valid translations for the current Ge'ez word
@@ -94,6 +115,8 @@ const DictionaryGame = () => {
       if (currentTranslations.length === 0) {
         console.warn(`No valid translations found for Ge'ez word: ${geezWord.word}`);
         const nextIndex = currentChallengeIndex + 1;
+  
+        // Check if there are remaining challenges
         if (nextIndex < geezWords.length) {
           setCurrentChallengeIndex(nextIndex);
           loadChallenge(geezWords[nextIndex], translations);
@@ -111,6 +134,8 @@ const DictionaryGame = () => {
       if (!correctTranslation || !correctTranslation.word) {
         console.warn("Correct translation is missing 'word' property.");
         const nextIndex = currentChallengeIndex + 1;
+  
+        // Check if there are remaining challenges
         if (nextIndex < geezWords.length) {
           setCurrentChallengeIndex(nextIndex);
           loadChallenge(geezWords[nextIndex], translations);
@@ -153,6 +178,7 @@ const DictionaryGame = () => {
       console.error("Error loading challenge:", error);
     }
   };
+  
   
   
 
@@ -310,18 +336,29 @@ const DictionaryGame = () => {
             <option value="ሐ">ሐ</option>
             <option value="ሀ">ሀ</option>
             <option value="ኀ">ኀ</option>
-            {/* <option value="ለ">ለ</option>
+            <option value="ለ">ለ</option>
             <option value="መ">መ</option>
             <option value="ሰ">ሰ</option>
             <option value="ሠ">ሠ</option>
             <option value="ረ">ረ</option>
             <option value="ቀ">ቀ</option>
             <option value="በ">በ</option>
-            <option value="ተ">ተ</option> */}
+            <option value="ተ">ተ</option>
             <option value="ነ">ነ</option>
             <option value="ዐ">ዐ</option>
             <option value="አ">አ</option>
-
+            <option value="ከ">ከ</option>
+            <option value="ወ">ወ</option>
+            <option value="ዘ">ዘ</option>
+            <option value="የ">የ</option>
+            <option value="ደ">ደ</option>
+            <option value="ገ">ገ</option>
+            <option value="ጠ">ጠ</option>
+            <option value="ጰ">ጰ</option>
+            <option value="ጸ">ጸ</option>
+            <option value="ፀ">ፀ</option>
+            <option value="ፈ">ፈ</option>
+            <option value="ፐ">ፐ</option>
           </select>
           <br />
           <button
