@@ -4,7 +4,7 @@ import { FaSearch } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../../util/supabaseClient";
 
-function SearchPage() {
+function DictionaryEdit() {
   const [query, setQuery] = useState("");
   const [selectedLanguage, setSelectedLanguage] = useState("gz"); // Default to Ge'ez
   const [languages, setLanguages] = useState([]);
@@ -119,7 +119,7 @@ function SearchPage() {
         <meta name="author" content="Your Name or Organization" />
         <link rel="canonical" href="https://yourwebsite.com/dictionary" />
       </Helmet>
-      <h1 className="text-4xl font-bold text-blue-700 mb-6">Dictionary</h1>
+      <h1 className="text-4xl font-bold text-blue-700 mb-6">Edit Dictionary</h1>
 
       {/* Language Selection Dropdown */}
       <div className="mb-4 w-full max-w-lg">
@@ -230,4 +230,4 @@ function SearchPage() {
   );
 }
 
-export default SearchPage;
+export default DictionaryEdit;

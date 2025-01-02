@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { supabase } from "../../util/supabaseClient";
 
-function UpdateWordPage() {
+function UpdateWord() {
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -109,7 +109,7 @@ function UpdateWordPage() {
         }
       }
   
-      navigate("/dictionary");
+      navigate("/dictionaryEdit");
     } catch (err) {
       console.error("Error updating word or translations:", err);
       setError("An error occurred while updating the word or translations.");
@@ -206,4 +206,4 @@ function UpdateWordPage() {
   );
 }
 
-export default UpdateWordPage;
+export default UpdateWord;

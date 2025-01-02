@@ -42,9 +42,8 @@ const NavBar = () => {
     { id: 4, label: "Contact", link: "contact" },
     { id: 5, label: "Hobby", path: "/hobby" },
     { id: 6, label: "Dictionary", path: "/dictionary" },
-    { id: 7, label: "Add Word", path: "/add-word" },
-    { id: 8, label: "Game", path: "/game" },
-    { id: 9, label: "ቅኔ", path: "/blog" },
+    { id: 7, label: "Game", path: "/game" },
+    { id: 8, label: "ቅኔ", path: "/blog" },
   ];
 
   const socials = [

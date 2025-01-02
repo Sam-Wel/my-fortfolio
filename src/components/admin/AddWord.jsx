@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { supabase } from "../../util/supabaseClient";
 
-const AddWordPage = () => {
+const AddWord = () => {
   const [wordData, setWordData] = useState({
     geez: "",
     tigrinya: "",
@@ -218,4 +218,4 @@ const AddWordPage = () => {
   );
 };
 
-export default AddWordPage;
+export default AddWord;
