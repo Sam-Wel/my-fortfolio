@@ -3,15 +3,15 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import NavBar from "./components/personal/NavBar";
 import Home from "./components/Home";
 import Hobby from "./components/personal/Hobby";
-import AddWordPage from "./components/admin/AddWord";
-import UpdateWordPage from "./components/admin/UpdateWord";
-import Dictionary from "./components/BeteQnie/Dictionary";
-import DictionaryGame from "./components/BeteQnie/DictionaryGame";
-import AddBlogPost from "./components/admin/AddBlogPost";
+import AddWordPage from "./components/dictionary/AddWord";
+import UpdateWordPage from "./components/dictionary/UpdateWord";
+import Dictionary from "./components/dictionary/Dictionary";
+import DictionaryGame from "./components/dictionary/DictionaryGame";
+import AddBlogPost from "./components/BeteQnie/AddBlogPost";
 import BlogList from "./components/BeteQnie/BlogList";
-import UpdateBlogPost from "./components/admin/UpdateBlogPost";
-import DictionaryEdit from "./components/admin/DictionaryEdit";
-import AdminDashboard from "./components/admin/AdminDashboard";
+import UpdateBlogPost from "./components/BeteQnie/UpdateBlogPost";
+import DictionaryEdit from "./components/dictionary/DictionaryEdit";
+import AdminDashboard from "./components/AdminDashboard";
 
 function App() {
   return (
@@ -27,6 +27,7 @@ function App() {
             <Route path="/update-word/:id" element={<UpdateWordPage />} />
             <Route path="/game" element={<DictionaryGame />} />
             <Route path="/blog" element={<BlogList />} />
+            <Route path="/blogEdit" element={<BlogList />} />
             <Route path="/add-blog" element={<AddBlogPost />} />
             <Route path="/update-blog/:id" element={<UpdateBlogPost />} />
             <Route path="/admin" element={<AdminDashboard />} />

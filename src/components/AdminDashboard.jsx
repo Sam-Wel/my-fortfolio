@@ -8,6 +8,7 @@ const AdminDashboard = () => {
     { name: "Add Blog Post", path: "/add-blog" },
     { name: "Add Dictionary Word", path: "/add-word" },
     { name: "Manage Dictionary", path: "/dictionaryEdit" },
+    { name: "Manage Blog posts", path: "/blogEdit" },
   ];
 
   return (
