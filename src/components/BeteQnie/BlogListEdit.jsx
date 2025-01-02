@@ -74,7 +74,7 @@ const BlogListEdit = () => {
 
   return (
     <div className="max-w-6xl mx-auto p-6 pt-24">
-      <h1 className="text-4xl font-bold mb-6 text-center text-gray-800">ቤተ ቅኔ</h1>
+      <h1 className="text-4xl font-bold mb-6 text-center text-gray-800">ቤተ ቅኔ - Edit Blogs</h1>
 
       {/* Search and Filter Section */}
       <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
@@ -106,7 +106,7 @@ const BlogListEdit = () => {
           {filteredPosts.map((post) => (
             <div
               key={post.id}
-              className="border rounded-lg p-6 shadow-md bg-white hover:shadow-lg transition-shadow"
+              className="relative border rounded-lg p-6 shadow-md bg-white hover:shadow-lg transition-shadow"
             >
               <h2 className="text-xl font-semibold text-gray-800">{post.title}</h2>
               <p className="text-sm text-gray-500">
@@ -120,7 +120,7 @@ const BlogListEdit = () => {
               ></div>
               <button
                 onClick={() => navigate(`/update-blog/${post.id}`)}
-                className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                className="absolute top-2 right-2 text-sm px-3 py-1 bg-gray-100 text-gray-600 rounded-full hover:bg-gray-200 transition"
               >
                 Edit
               </button>
