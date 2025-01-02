@@ -23,13 +23,14 @@ const AddWordPage = () => {
         .select("word_id")
         .eq("word", word)
         .eq("language_code", language_code)
-        .single();
+        .maybeSingle();
 
-      if (fetchError && fetchError.code !== "PGRST116") {
+      if (fetchError) {
         throw fetchError;
       }
 
       if (existingWord) {
+        console.log(`Found existing word: ${word} (${language_code}) -> ID: ${existingWord.word_id}`);
         return existingWord.word_id;
       }
 
@@ -43,70 +44,119 @@ const AddWordPage = () => {
         throw insertError;
       }
 
+      console.log(`Inserted new word: ${word} (${language_code}) -> ID: ${newWord.word_id}`);
       return newWord.word_id;
     } catch (err) {
+      console.error(`Error handling word '${word}' (${language_code}): ${err.message}`);
       throw new Error(`Error handling word '${word}' (${language_code}): ${err.message}`);
     }
   };
 
+  const getExistingMappingsForGeez = async (geezId) => {
+    try {
+      const { data: existingMappings, error } = await supabase
+        .from("translationmappings")
+        .select("related_word_id")
+        .eq("word_id", geezId);
+  
+      if (error) {
+        throw new Error(`Error fetching existing mappings for Ge'ez word: ${error.message}`);
+      }
+  
+      return existingMappings.map((mapping) => mapping.related_word_id);
+    } catch (err) {
+      console.error(`Error fetching existing mappings: ${err.message}`);
+      throw new Error(`Error fetching existing mappings: ${err.message}`);
+    }
+  };
+  
   const insertMappings = async (wordId, relatedWordIds) => {
     try {
-      const mappings = relatedWordIds.map((relatedWordId) => ({
-        word_id: wordId,
-        related_word_id: relatedWordId,
-      }));
+      const validMappings = relatedWordIds
+        .filter((relatedWordId) => relatedWordId) // Filter out null/undefined IDs
+        .map((relatedWordId) => ({
+          word_id: wordId,
+          related_word_id: relatedWordId,
+        }));
   
-      if (mappings.length > 0) {
+      if (validMappings.length > 0) {
         const { error: mappingError } = await supabase
           .from("translationmappings")
-          .upsert(mappings, { onConflict: ["word_id", "related_word_id"] });
+          .upsert(validMappings, { onConflict: ["word_id", "related_word_id"] });
   
         if (mappingError) {
           throw new Error(`Error inserting/updating mappings: ${mappingError.message}`);
         }
+        console.log(`Mappings created/updated for word ID ${wordId}:`, validMappings);
       }
     } catch (err) {
+      console.error(`Error creating mappings for word ID ${wordId}: ${err.message}`);
       throw new Error(`Error creating mappings: ${err.message}`);
     }
   };
   
-
+  const createBidirectionalMappings = async (geezId, relatedIds, existingMappings) => {
+    try {
+      const { ti, am, en } = relatedIds;
+      const allTranslations = [...existingMappings, ti, am, en].filter(Boolean); // Merge existing and provided
+  
+      // Create bidirectional mappings between Ge'ez and provided translations
+      for (const relatedId of [ti, am, en].filter(Boolean)) {
+        await insertMappings(geezId, [relatedId]);
+        await insertMappings(relatedId, [geezId]);
+      }
+  
+      // Create bidirectional mappings between all translations (including Ge'ez)
+      for (const wordA of allTranslations) {
+        for (const wordB of allTranslations) {
+          if (wordA !== wordB) {
+            await insertMappings(wordA, [wordB]); // Create mapping
+          }
+        }
+      }
+    } catch (err) {
+      console.error(`Error creating bidirectional mappings: ${err.message}`);
+      throw new Error(`Error creating bidirectional mappings: ${err.message}`);
+    }
+  };
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
     setSuccess(null);
-
+  
     const { geez, tigrinya, amharic, english } = wordData;
-
+  
     if (!geez) {
       setError("The Ge'ez word is required.");
       return;
     }
-
+  
     try {
-      const wordEntries = [];
-
+      const wordEntries = {};
+  
+      // Insert words or fetch their IDs
       const addWordIfProvided = async (word, languageCode) => {
         if (word) {
           const wordId = await getOrInsertWord(word, languageCode);
-          wordEntries.push({ id: wordId, word, languageCode });
+          wordEntries[languageCode] = wordId;
         }
       };
-
+  
       await addWordIfProvided(geez, "gz");
       await addWordIfProvided(tigrinya, "ti");
       await addWordIfProvided(amharic, "am");
       await addWordIfProvided(english, "en");
-
-      for (let i = 0; i < wordEntries.length; i++) {
-        const wordId = wordEntries[i].id;
-        const relatedWordIds = wordEntries
-          .filter((entry, index) => index !== i)
-          .map((entry) => entry.id);
-
-        await insertMappings(wordId, relatedWordIds);
+  
+      const geezId = wordEntries["gz"];
+      if (geezId) {
+        // Fetch existing mappings for the Ge'ez word
+        const existingMappings = await getExistingMappingsForGeez(geezId);
+  
+        // Create bidirectional mappings for related translations
+        await createBidirectionalMappings(geezId, wordEntries, existingMappings);
       }
-
+  
       setSuccess("Word(s) and mappings added successfully!");
       setWordData({ geez: "", tigrinya: "", amharic: "", english: "" });
     } catch (err) {
@@ -114,6 +164,7 @@ const AddWordPage = () => {
       setError(`Failed to add the word(s): ${err.message}`);
     }
   };
+  
 
   return (
     <div className="flex h-screen w-full min-h-screen flex-col items-center justify-center bg-gradient-to-b from-gray-100 to-gray-200 p-4">
