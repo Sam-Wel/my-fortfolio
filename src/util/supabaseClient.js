@@ -7,4 +7,4 @@ if (!SUPABASE_URL || !SUPABASE_SECRET_KEY) {
   throw new Error("Missing Supabase environment variables.");
 }
 
-export const supabaseServer = createClient(SUPABASE_URL, SUPABASE_SECRET_KEY);
+export const supabase = createClient(SUPABASE_URL, SUPABASE_SECRET_KEY);
