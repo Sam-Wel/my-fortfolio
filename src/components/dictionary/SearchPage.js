@@ -63,22 +63,21 @@ function SearchPage() {
     }
   };
 
-  // Handle search functionality
   const handleSearch = async () => {
     if (!query.trim() || !selectedLanguage) {
       setError("Please enter a search term and select a language.");
       return;
     }
-
+  
     setLoading(true);
     setError(null);
-
+  
     try {
       const { data, error } = await supabase.rpc("get_translations", {
-        search_word: `%${query}%`,
+        search_word: query.trim(), // Removed wildcards
         language: selectedLanguage,
       });
-
+  
       if (error) {
         setError("Failed to fetch data. Please try again.");
         console.error(error);
@@ -92,6 +91,7 @@ function SearchPage() {
       setLoading(false);
     }
   };
+  
 
   // Navigate to the edit page with the ID of the searched word
   const handleEditClick = () => {
@@ -198,8 +198,7 @@ function SearchPage() {
                 {Object.entries(
                   results.reduce((acc, result) => {
                     const lang =
-                      languageMap[result.target_language] ||
-                      result.target_language;
+                      languageMap[result.target_language] || result.target_language;
                     if (!acc[lang]) acc[lang] = [];
                     acc[lang].push(result.translated_word);
                     return acc;
@@ -207,7 +206,9 @@ function SearchPage() {
                 ).map(([language, words], index) => (
                   <tr key={index} className="border-b border-gray-100">
                     <td className="p-2 font-medium text-gray-700">{language}</td>
-                    <td className="p-2 text-gray-700">{words.join("፡ ")}</td>
+                    <td className="p-2 text-gray-700">
+                      {words.join(language === "ኢንግልሽ - English" ? ", " : "፣")}
+                    </td>
                   </tr>
                 ))}
               </tbody>
