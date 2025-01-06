@@ -159,7 +159,7 @@ const DictionaryGame = () => {
       )];
   
       // Ensure at least 5 distractors are available
-      while (distractors.length < 5) {
+      while (distractors.length < 3) {
         const randomExtra = shuffledTranslations[Math.floor(Math.random() * shuffledTranslations.length)];
         if (randomExtra?.words?.word && !distractors.includes(randomExtra.words.word) && randomExtra.words.word !== correctOption) {
           distractors.push(randomExtra.words.word);
