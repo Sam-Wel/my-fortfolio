@@ -158,7 +158,7 @@ const DictionaryGame = () => {
           .map((t) => t.words.word)
       )];
   
-      // Ensure at least 5 distractors are available
+      // Ensure at least 3 distractors are available
       while (distractors.length < 3) {
         const randomExtra = shuffledTranslations[Math.floor(Math.random() * shuffledTranslations.length)];
         if (randomExtra?.words?.word && !distractors.includes(randomExtra.words.word) && randomExtra.words.word !== correctOption) {
@@ -167,7 +167,7 @@ const DictionaryGame = () => {
       }
   
       // Combine the correct option with distractors and shuffle
-      const options = [correctOption, ...distractors.slice(0, 5)].sort(() => Math.random() - 0.5);
+      const options = [correctOption, ...distractors.slice(0, 3)].sort(() => Math.random() - 0.5);
   
       setCurrentChallenge({
         geez: geezWord.word,
