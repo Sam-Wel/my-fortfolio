@@ -7,6 +7,7 @@ const AddWord = () => {
     tigrinya: "",
     amharic: "",
     english: "",
+    sewasew: "",
   });
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
@@ -73,17 +74,17 @@ const AddWord = () => {
   const insertMappings = async (wordId, relatedWordIds) => {
     try {
       const validMappings = relatedWordIds
-        .filter((relatedWordId) => relatedWordId) // Filter out null/undefined IDs
+        .filter((relatedWordId) => relatedWordId)
         .map((relatedWordId) => ({
           word_id: wordId,
           related_word_id: relatedWordId,
         }));
-  
+
       if (validMappings.length > 0) {
         const { error: mappingError } = await supabase
           .from("translationmappings")
           .upsert(validMappings, { onConflict: ["word_id", "related_word_id"] });
-  
+
         if (mappingError) {
           throw new Error(`Error inserting/updating mappings: ${mappingError.message}`);
         }
@@ -94,6 +95,41 @@ const AddWord = () => {
       throw new Error(`Error creating mappings: ${err.message}`);
     }
   };
+
+  const handleSewasew = async (geezId, sewasewText) => {
+    if (!sewasewText) return;
+
+    try {
+      const { data: existingSewasew, error: fetchError } = await supabase
+        .from("sewasew")
+        .select("sewasew_id")
+        .eq("word_id", geezId)
+        .eq("sewasew_text", sewasewText)
+        .maybeSingle();
+
+      if (fetchError) {
+        throw fetchError;
+      }
+
+      if (!existingSewasew) {
+        const { error: insertError } = await supabase
+          .from("sewasew")
+          .insert([{ word_id: geezId, sewasew_text: sewasewText }]);
+
+        if (insertError) {
+          throw insertError;
+        }
+
+        console.log(`Sewasew added for Ge'ez word ID ${geezId}: ${sewasewText}`);
+      } else {
+        console.log(`Sewasew already exists for Ge'ez word ID ${geezId}: ${sewasewText}`);
+      }
+    } catch (err) {
+      console.error(`Error handling Sewasew: ${err.message}`);
+      throw new Error(`Error handling Sewasew: ${err.message}`);
+    }
+  };
+
   
   const createBidirectionalMappings = async (geezId, relatedIds, existingMappings) => {
     try {
@@ -102,15 +138,19 @@ const AddWord = () => {
   
       // Create bidirectional mappings between Ge'ez and provided translations
       for (const relatedId of [ti, am, en].filter(Boolean)) {
+
         await insertMappings(geezId, [relatedId]);
         await insertMappings(relatedId, [geezId]);
       }
   
+  
+      // Create bidirectional mappings between all translations (including Ge'ez)
+
       // Create bidirectional mappings between all translations (including Ge'ez)
       for (const wordA of allTranslations) {
         for (const wordB of allTranslations) {
           if (wordA !== wordB) {
-            await insertMappings(wordA, [wordB]); // Create mapping
+            await insertMappings(wordA, [wordB]);
           }
         }
       }
@@ -119,22 +159,25 @@ const AddWord = () => {
       throw new Error(`Error creating bidirectional mappings: ${err.message}`);
     }
   };
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
     setSuccess(null);
-  
-    const { geez, tigrinya, amharic, english } = wordData;
-  
+
+    const { geez, tigrinya, amharic, english, sewasew } = wordData;
+
     if (!geez) {
       setError("The Ge'ez word is required.");
       return;
     }
-  
+
     try {
       const wordEntries = {};
   
+  
+      // Insert words or fetch their IDs
+
       // Insert words or fetch their IDs
       const addWordIfProvided = async (word, languageCode) => {
         if (word) {
@@ -142,29 +185,30 @@ const AddWord = () => {
           wordEntries[languageCode] = wordId;
         }
       };
-  
+
       await addWordIfProvided(geez, "gz");
       await addWordIfProvided(tigrinya, "ti");
       await addWordIfProvided(amharic, "am");
       await addWordIfProvided(english, "en");
-  
+
       const geezId = wordEntries["gz"];
       if (geezId) {
-        // Fetch existing mappings for the Ge'ez word
+                // Fetch existing mappings for the Ge'ez word
         const existingMappings = await getExistingMappingsForGeez(geezId);
   
         // Create bidirectional mappings for related translations
+
+        await handleSewasew(geezId, sewasew);
         await createBidirectionalMappings(geezId, wordEntries, existingMappings);
       }
-  
-      setSuccess("Word(s) and mappings added successfully!");
-      setWordData({ geez: "", tigrinya: "", amharic: "", english: "" });
+
+      setSuccess("Word(s), Sewasew, and mappings added successfully!");
+      setWordData({ geez: "", tigrinya: "", amharic: "", english: "", sewasew: "" });
     } catch (err) {
       console.error("Error adding word:", err);
       setError(`Failed to add the word(s): ${err.message}`);
     }
   };
-  
 
   return (
     <div className="flex h-screen w-full min-h-screen flex-col items-center justify-center bg-gradient-to-b from-gray-100 to-gray-200 p-4">
@@ -185,23 +229,23 @@ const AddWord = () => {
         )}
 
         <form onSubmit={handleSubmit}>
-          {["geez", "tigrinya", "amharic", "english"].map((lang, index) => (
+          {["geez", "tigrinya", "amharic", "english", "sewasew"].map((field, index) => (
             <div key={index} className="mb-6">
               <label
-                htmlFor={lang}
+                htmlFor={field}
                 className="block text-gray-700 text-sm font-semibold mb-2"
               >
-                {lang.charAt(0).toUpperCase() + lang.slice(1)} Word:
+                {field.charAt(0).toUpperCase() + field.slice(1)}:
               </label>
               <input
                 type="text"
-                id={lang}
-                name={lang}
-                value={wordData[lang]}
+                id={field}
+                name={field}
+                value={wordData[field]}
                 onChange={handleChange}
                 className="w-full px-4 py-3 border rounded-lg shadow-sm focus:outline-none focus:ring focus:border-blue-400 text-gray-700"
-                placeholder={`Enter word in ${lang}`}
-                required={lang === "geez"} // Ge'ez is required
+                placeholder={`Enter ${field}`}
+                required={field === "geez"}
               />
             </div>
           ))}

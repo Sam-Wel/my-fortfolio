@@ -3,7 +3,7 @@ import { supabase } from "../../util/supabaseClient";
 
 const DictionaryGame = () => {
   const [gameStarted, setGameStarted] = useState(false);
-  const [languageCode, setLanguageCode] = useState("am"); // Default to Tigrinya
+  const [languageCode, setLanguageCode] = useState("ti"); // Default to Tigrinya
   const [suffix, setSuffix] = useState("ሐ"); // Default suffix
   const [geezWords, setGeezWords] = useState([]);
   const [translations, setTranslations] = useState([]);

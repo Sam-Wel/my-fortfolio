@@ -9,6 +9,7 @@ function Dictionary() {
   const [languages, setLanguages] = useState([]);
   const [results, setResults] = useState([]);
   const [suggestions, setSuggestions] = useState([]);
+  const [sewasewExamples, setSewasewExamples] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -66,21 +67,44 @@ function Dictionary() {
       setError("Please enter a search term and select a language.");
       return;
     }
-  
+
     setLoading(true);
     setError(null);
-  
+    setSewasewExamples([]);
+    setResults([]);
+
     try {
-      const { data, error } = await supabase.rpc("get_translations", {
-        search_word: query.trim(), // Removed wildcards
-        language: selectedLanguage,
-      });
-  
-      if (error) {
+      // Fetch translations
+      const { data: translationData, error: translationError } = await supabase.rpc(
+        "get_translations",
+        {
+          search_word: query.trim(), // Removed wildcards
+          language: selectedLanguage,
+        }
+      );
+
+      if (translationError) {
         setError("Failed to fetch data. Please try again.");
-        console.error(error);
+        console.error(translationError);
       } else {
-        setResults(data);
+        setResults(translationData);
+      }
+
+      // Fetch Sewasew examples if the searched language is Ge'ez
+      if (selectedLanguage === "gz") {
+        const { data: sewasewData, error: sewasewError } = await supabase
+          .from("sewasew")
+          .select("sewasew_text")
+          .in(
+            "word_id",
+            translationData.map((item) => item.word_id) // Use the word IDs from the results
+          );
+
+        if (sewasewError) {
+          console.error("Error fetching Sewasew examples:", sewasewError);
+        } else {
+          setSewasewExamples(sewasewData);
+        }
       }
     } catch (err) {
       setError("An unexpected error occurred.");
@@ -89,7 +113,7 @@ function Dictionary() {
       setLoading(false);
     }
   };
-  
+
   return (
     <div className="flex h-screen w-full min-h-screen flex-col items-center justify-center bg-gradient-to-b from-gray-100 to-gray-200 p-4 pt-24">
       <Helmet>
@@ -206,6 +230,22 @@ function Dictionary() {
           )
         )}
       </div>
+
+      {/* Sewasew Section */}
+      {sewasewExamples.length > 0 && (
+        <div className="mt-8 w-full max-w-3xl">
+          <div className="p-6 border rounded-lg shadow-xl bg-white">
+            <h2 className="text-2xl font-semibold text-gray-800 mb-4">Sewasew:</h2>
+            <ul className="list-disc pl-6">
+              {sewasewExamples.map((example, index) => (
+                <li key={index} className="text-gray-700 mb-2">
+                  {example.sewasew_text}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

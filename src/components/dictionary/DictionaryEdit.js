@@ -10,6 +10,7 @@ function DictionaryEdit() {
   const [languages, setLanguages] = useState([]);
   const [results, setResults] = useState([]);
   const [suggestions, setSuggestions] = useState([]);
+  const [sewasewExamples, setSewasewExamples] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
@@ -50,8 +51,8 @@ function DictionaryEdit() {
         .from("words")
         .select("word")
         .eq("language_code", selectedLanguage)
-        .ilike("word", `${value}%`) // Match words starting with the input
-        .limit(5); // Limit suggestions to 5
+        .ilike("word", `${value}%`)
+        .limit(5);
 
       if (error) {
         console.error("Error fetching suggestions:", error);
@@ -68,21 +69,39 @@ function DictionaryEdit() {
       setError("Please enter a search term and select a language.");
       return;
     }
-  
+
     setLoading(true);
     setError(null);
-  
+    setSewasewExamples([]);
+    setResults([]);
+
     try {
-      const { data, error } = await supabase.rpc("get_translations", {
-        search_word: query.trim(), // Removed wildcards
-        language: selectedLanguage,
-      });
-  
-      if (error) {
+      const { data: translationData, error: translationError } = await supabase.rpc(
+        "get_translations",
+        {
+          search_word: query.trim(),
+          language: selectedLanguage,
+        }
+      );
+
+      if (translationError) {
         setError("Failed to fetch data. Please try again.");
-        console.error(error);
+        console.error(translationError);
       } else {
-        setResults(data);
+        setResults(translationData);
+      }
+
+      if (selectedLanguage === "gz" && translationData.length > 0) {
+        const { data: sewasewData, error: sewasewError } = await supabase
+          .from("sewasew")
+          .select("sewasew_id, sewasew_text")
+          .in("word_id", translationData.map((item) => item.word_id));
+
+        if (sewasewError) {
+          console.error("Error fetching Sewasew examples:", sewasewError);
+        } else {
+          setSewasewExamples(sewasewData);
+        }
       }
     } catch (err) {
       setError("An unexpected error occurred.");
@@ -91,9 +110,28 @@ function DictionaryEdit() {
       setLoading(false);
     }
   };
-  
 
-  // Navigate to the edit page with the ID of the searched word
+  const handleEditSewasew = async (id, newText) => {
+    try {
+      const { error } = await supabase
+        .from("sewasew")
+        .update({ sewasew_text: newText })
+        .eq("sewasew_id", id);
+
+      if (error) {
+        console.error("Error updating Sewasew example:", error);
+      } else {
+        setSewasewExamples((prev) =>
+          prev.map((example) =>
+            example.sewasew_id === id ? { ...example, sewasew_text: newText } : example
+          )
+        );
+      }
+    } catch (err) {
+      console.error("Unexpected error updating Sewasew example:", err);
+    }
+  };
+
   const handleEditClick = () => {
     if (results.length > 0) {
       navigate(`/update-word/${results[0].word_id}`, {
@@ -107,17 +145,12 @@ function DictionaryEdit() {
   return (
     <div className="flex h-screen w-full min-h-screen flex-col items-center justify-center bg-gradient-to-b from-gray-100 to-gray-200 p-4 pt-24">
       <Helmet>
-        <title>Geez Dictionary | Tigrigna | Amharic | ግእዝ | ትግርኛ | አምሓርኛ| ቅኔ| መጽሐፈግስ| ወስዋስው</title>
+        <title>Edit Dictionary | Ge'ez | Tigrigna | Amharic</title>
         <meta
           name="description"
-          content="Search Ge'ez, Tigrinya, and Amharic words with translations. Find words like ግስ, ስዋስው, ቅኔ and more in this dictionary."
+          content="Edit dictionary entries for Ge'ez, Tigrinya, and Amharic words."
         />
-        <meta
-          name="keywords"
-          content="Geez dictionary, Tigrigna dictionary, Amharic dictionary, ግእዝ, ትግርኛ, አምሓርኛ, ግስ, ስዋስው, ቅኔ, መጽሐፈግስ"
-        />
-        <meta name="author" content="Your Name or Organization" />
-        <link rel="canonical" href="https://yourwebsite.com/dictionary" />
+        <link rel="canonical" href="https://yourwebsite.com/dictionary/edit" />
       </Helmet>
       <h1 className="text-4xl font-bold text-blue-700 mb-6">Edit Dictionary</h1>
 
@@ -178,10 +211,6 @@ function DictionaryEdit() {
         Search
       </button>
 
-      {/* Loading and Error Messages */}
-      {loading && <p className="text-gray-500 mt-4">Loading...</p>}
-      {error && <p className="text-red-500 mt-4">{error}</p>}
-
       {/* Results Display */}
       <div className="mt-8 w-full max-w-3xl">
         {results.length > 0 ? (
@@ -224,6 +253,27 @@ function DictionaryEdit() {
           !loading && query.trim() && (
             <p className="text-gray-500 mt-4">No results found.</p>
           )
+        )}
+
+        {/* Sewasew Section */}
+        {sewasewExamples.length > 0 && (
+          <div className="mt-8 w-full max-w-3xl">
+            <div className="p-6 border rounded-lg shadow-xl bg-white">
+              <h2 className="text-2xl font-semibold text-gray-800 mb-4">Sewasew Examples:</h2>
+              {sewasewExamples.map((example) => (
+                <div key={example.sewasew_id} className="flex items-center mb-4">
+                  <input
+                    type="text"
+                    value={example.sewasew_text}
+                    onChange={(e) =>
+                      handleEditSewasew(example.sewasew_id, e.target.value)
+                    }
+                    className="flex-grow p-2 border rounded-lg shadow-sm focus:outline-none focus:ring focus:border-blue-400"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
         )}
       </div>
     </div>
