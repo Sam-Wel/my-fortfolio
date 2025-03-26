@@ -24,7 +24,8 @@ const Experience = () => {
   ];
 
   return (
-    <div id="experience" className="bg-dark-blue text-white min-h-screen flex items-center justify-center px-8">
+    <div id="experience" 
+    className="bg-dark-blue text-white min-h-screen flex items-center justify-center px-8">
       <div className="max-w-6xl w-full text-center">
       <h2
           className="text-5xl font-bold text-blue-500 border-b-4 border-blue-900 pb-4"
