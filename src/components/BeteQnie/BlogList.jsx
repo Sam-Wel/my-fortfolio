@@ -94,8 +94,10 @@ const BlogList = () => {
           <option value="እዝል">ጉባኤ ቃና - እዝል</option>
           <option value="ዘአምላኪየ">ዘአምላኪየ</option>
           <option value="ሚበዝሑ">ሚበዝሑ</option>
+          <option value="ዋዜማ">ዋዜማ</option>
           <option value="ሥላሴ">ሥላሴ</option>
           <option value="ዕጣነ-ሞገር">ዕጣነ ሞገር</option>
+          <option value="አገባብ">አገባብ</option>
         </select>
       </div>
 
