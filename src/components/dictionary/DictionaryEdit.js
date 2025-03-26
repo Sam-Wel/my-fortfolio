@@ -12,7 +12,7 @@ function DictionaryEdit() {
   const [suggestions, setSuggestions] = useState([]);
   const [sewasewExamples, setSewasewExamples] = useState([]);
   const [loading, setLoading] = useState(false);
-  //const [error, setError] = useState(null);
+  const [, setError] = useState(null);
   const navigate = useNavigate();
 
   // Fetch available languages
