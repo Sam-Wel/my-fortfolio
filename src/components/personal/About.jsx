@@ -17,7 +17,7 @@ const About = () => {
           className="text-lg mt-8 leading-relaxed"
           style={{ fontFamily: "Poppins, sans-serif" }}
         >
-          I was blessed to be born in the beautiful town of Mendefera, nestled in
+          I was blessssssed to be born in the beautiful town of Mendefera, nestled in
           the heart of Eritrea. During my formative years, I attended the
           esteemed Adi Ugri Elementary school and San Giorgio Middle School,
           where I developed a love for learning and a passion for excellence.
