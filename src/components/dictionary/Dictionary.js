@@ -117,7 +117,7 @@ function Dictionary() {
   return (
     <div className="flex h-screen w-full min-h-screen flex-col items-center justify-center bg-gradient-to-b from-gray-100 to-gray-200 p-4 pt-24">
       <Helmet>
-        <title>Geez Dictionary | Tigrigna | Amharic | ግእዝ | ትግርኛ | አምሓርኛ| ቅኔ| መጽሐፈግስ| ወስዋስው</title>
+        <title>Samuel Fessehaye | Geez Dictionary | Tigrigna | Amharic | ግእዝ | ትግርኛ | አምሓርኛ| ቅኔ| መጽሐፈግስ| ወስዋስው</title>
         <meta
           name="description"
           content="Search Ge'ez, Tigrinya, and Amharic words with translations. Find words like ግስ, ስዋስው, ቅኔ and more in this dictionary."
@@ -126,7 +126,7 @@ function Dictionary() {
           name="keywords"
           content="Geez dictionary, Tigrigna dictionary, Amharic dictionary, ግእዝ, ትግርኛ, አምሓርኛ, ግስ, ስዋስው, ቅኔ, መጽሐፈግስ"
         />
-        <meta name="author" content="Your Name or Organization" />
+        <meta name="author" content="Samuel Fessehaye Geez Dictionary " />
         <link rel="canonical" href="https://yourwebsite.com/dictionary" />
       </Helmet>
       <h1 className="text-4xl font-bold text-blue-700 mb-6">Dictionary</h1>
