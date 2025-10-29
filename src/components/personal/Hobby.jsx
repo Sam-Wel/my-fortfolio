@@ -6,7 +6,7 @@ const Hobby = () => {
       id: 1,
       date: "12/4/2024",
       title: "Instruments",
-      content:"I can play three Eritrean/Ethiopian instruments such as Kirar, Mesenqo, Shambqo(Washint). I am a member of a church choir at my church (DGKM Eritrean Orthodox Tewahedo Church) and I play these insturments at special. I enjoy singing and playing these instruments at my recreational time as well.",
+      content:"I can play three Eritrean/Ethiopian instruments such as Kirar, Mesenqo, Shambqo(Washint). I am a member of a church choir at my church (DGKM Eritrean Orthodox Tewahedo Church). I play these insturments at special events. I enjoy singing and playing these instruments at my recreational time as well.",
       style: "shadow-black",
       size:"w-20 mx-auto",
     },
@@ -22,7 +22,7 @@ const Hobby = () => {
       id: 3,
       date: "11/4/2024",
       title: "Entertainent",
-      content:"I enjoy watching movies or tv-shows such as Redemption, The 100, Breaking Bad etc. I watch sports like Premier League and UFC. I play video games, mainly FIFA. ",
+      content:"I enjoy watching movies or tv-shows such as ShawShank Redemption, The 100, Breaking Bad etc. I watch sports like Premier League and UFC. I play video games, mainly FIFA. ",
       style: "shadow-black",
       size:"w-20 mx-auto",
     },
@@ -43,7 +43,7 @@ const Hobby = () => {
           <p className="text-blue-500 text-4xl font-bold border-b-4 border-gray-500 p-2 ">
             Hobby
           </p>
-          <p className="py-6 text-gray-300">I will be writting some blogs and they will be listed on these page. NOTE: this is mock blog (currently on construction)</p>
+          <p className="py-6 text-gray-300">I will be writting some blogs and posting picture/video contents on this page. NOTE: this is just a mock blog (currently under construction)</p>
         </div>
 
         <div className="w-full grid grid-cols-1 sm:grid-cols-1 gap-8 text-center py-8 px-12 sm:px-0 text-white">
