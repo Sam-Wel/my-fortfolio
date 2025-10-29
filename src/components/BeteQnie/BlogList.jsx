@@ -111,7 +111,7 @@ const BlogList = () => {
           {filteredPosts.map((post) => (
             <div
               key={post.id}
-              className="border rounded-lg p-6 shadow-md bg-white hover:shadow-lg transition-shadow"
+              className="border rounded-lg p-6 shadow-md bg-blue-100 hover:shadow-lg transition-shadow"
             >
               <h2 className="text-xl font-semibold text-gray-800">{post.title}</h2>
               <p className="text-sm text-gray-500">

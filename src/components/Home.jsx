@@ -3,14 +3,14 @@ import profile from "../assets/profile1.png";
 import About from "./personal/About";
 import Experience from "./personal/Experience";
 import Contact from "./personal/Contact";
-
+import { FaLinkedin } from "react-icons/fa";
 const Home = () => {
   return (
     <div>
       {/* Hero Section */}
       <div
         id="home"
-        className="flex items-center h-screen w-full bg-dark-blue text-white justify-center pt-50 md:pt-0 mb-5"
+        className="flex items-center h-screen w-full bg-dark-blue text-white justify-center pt-70 md:pt-0 mb-5"
       >
         <div className="flex flex-col md:flex-row items-center px-6 max-w-screen-lg space-y-8 md:space-y-0">
           {/* Text Content */}
@@ -27,12 +27,19 @@ const Home = () => {
               career in Software Engineering and AI/ML, leveraging my skills to
               create impactful solutions.
             </p>
-            <a
+            {/* <a
               href="/FESSEHAYE, SAMUEL_RESUME_Updated.pdf"
               download
               className="mt-4 bg-blue-500 hover:bg-blue-700 text-white px-8 py-3 rounded-lg shadow-lg font-medium transition-all duration-300 transform hover:scale-105"
             >
               Download Resume
+            </a> */}
+            <a
+              href="https://www.linkedin.com/in/samuel-fessehaye/"
+              download
+              className="mt-4 bg-blue-500 hover:bg-blue-700 text-white px-8 py-3 rounded-lg shadow-lg font-medium transition-all duration-300 transform hover:scale-105"
+            >
+              LinkedIn             
             </a>
           </div>
 
