@@ -17,7 +17,7 @@ import AdminDashboard from "./components/AdminDashboard";
 function App() {
   return (
     <BrowserRouter>
-      <div className="App">
+      <div className="bg-dark-blue">
         <NavBar />
         <div className="content">
           <Routes>
