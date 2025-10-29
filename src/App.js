@@ -19,7 +19,7 @@ function App() {
     <BrowserRouter>
       <div className="App">
         <NavBar />
-        <div className="content">
+        <div className="content bg-dark-blue">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/hobby" element={<Hobby />} />
