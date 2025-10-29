@@ -3,7 +3,7 @@ import profile from "../assets/profile1.png";
 import About from "./personal/About";
 import Experience from "./personal/Experience";
 import Contact from "./personal/Contact";
-import { FaLinkedin } from "react-icons/fa";
+
 const Home = () => {
   return (
     <div>

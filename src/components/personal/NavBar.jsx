@@ -9,7 +9,7 @@ import {
   FaInstagram,
 } from "react-icons/fa";
 import { HiOutlineMail } from "react-icons/hi";
-import { BsFillPersonLinesFill } from "react-icons/bs";
+// import { BsFillPersonLinesFill } from "react-icons/bs";
 import { scroller } from "react-scroll";
 import { useNavigate } from "react-router-dom";
 
@@ -54,12 +54,12 @@ const NavBar = () => {
     },
     { id: 2, icon: <FaGithub />, href: "https://github.com/Sam-Wel" },
     { id: 3, icon: <HiOutlineMail />, href: "mailto:samuel.fessehaye477@gmail.com" },
-    {
-      id: 4,
-      icon: <BsFillPersonLinesFill />,
-      href: "/FESSEHAYE, SAMUEL_RESUME_Updated.pdf",
-      download: true,
-    },
+    // {
+    //   id: 4,
+    //   icon: <BsFillPersonLinesFill />,
+    //   href: "/FESSEHAYE, SAMUEL_RESUME_Updated.pdf",
+    //   download: true,
+    // },
     { id: 5, icon: <FaInstagram />, href: "https://www.instagram.com/sammy_wel_f/" },
     { id: 6, icon: <FaFacebook />, href: "https://www.facebook.com/profile.php?id=100008395952926" },
     { id: 7, icon: <FaTwitter />, href: "https://twitter.com/SamuelWeldemic5" },
