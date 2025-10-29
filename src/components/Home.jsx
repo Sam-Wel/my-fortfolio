@@ -6,7 +6,7 @@ import Contact from "./personal/Contact";
 
 const Home = () => {
   return (
-    <div className="pt-30">
+    <div className="pt-40">
       {/* Hero Section */}
       <div
         id="home"
