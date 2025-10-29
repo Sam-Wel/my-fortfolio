@@ -70,7 +70,7 @@ const BlogList = () => {
   }
 
   return (
-    <div className="max-w-6xl mx-auto p-6 pt-24"> {/* Added padding-top to push content below navbar */}
+    <div className="max-w-6xl mx-auto p-6 pt-24 bg-gradient-to-b from-gray-100 to-gray-200"> {/* Added padding-top to push content below navbar */}
       <h1 className="text-4xl font-bold mb-6 text-center text-gray-800">
         ቤተ ቅኔ
       </h1>
