@@ -27,7 +27,7 @@ function App() {
             <Route path="/add-word" element={<AddWordPage />} />
             <Route path="/update-word/:id" element={<UpdateWordPage />} />
             <Route path="/game" element={<DictionaryGame />} />
-            <Route path="/blog" element={<BlogList />} />
+            {/* <Route path="/blog" element={<BlogList />} /> */}
             <Route path="/blogEdit" element={<BlogListEdit />} />
             <Route path="/add-blog" element={<AddBlogPost />} />
             <Route path="/update-blog/:id" element={<UpdateBlogPost />} />
