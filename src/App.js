@@ -8,7 +8,7 @@ import UpdateWordPage from "./components/dictionary/UpdateWord";
 import Dictionary from "./components/dictionary/Dictionary";
 import DictionaryGame from "./components/dictionary/DictionaryGame";
 import AddBlogPost from "./components/BeteQnie/AddBlogPost";
-import BlogList from "./components/BeteQnie/BlogList";
+// import BlogList from "./components/BeteQnie/BlogList";
 import BlogListEdit from "./components/BeteQnie/BlogListEdit";
 import UpdateBlogPost from "./components/BeteQnie/UpdateBlogPost";
 import DictionaryEdit from "./components/dictionary/DictionaryEdit";
